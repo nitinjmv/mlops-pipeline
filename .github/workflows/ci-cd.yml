@@ -26,15 +26,20 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Load and Save Data
-        run: python src/data_pipeline.py
+      - name: data ingestion
+        run: python src/data_pipeline/data_ingestion.py
 
-      - name: Preprocess Data
-        run: python src/preprocess.py
+      - name: data preprocessing
+        run: python src/data_pipeline/data_preprocessing.py
 
-      - name: Train Model
-        run: python src/train.py
+      - name: feature_engineering
+        run: python src/data_pipeline/feature_engineering.py
 
+      - name: model building
+        run: python src/model_pipeline/model_building.py
+
+      - name: model evaluation
+        run: python src/model_pipeline/model_evaluation.py
       - name: Run Tests
         run: |
           pytest tests/data_pipeline/test_data_ingestion.py
