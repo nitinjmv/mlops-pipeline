@@ -34,15 +34,16 @@ jobs:
       - name: feature_engineering
         run: python src/data_pipeline/feature_engineering.py
 
+      - name: Run Tests
+        run: |
+          pytest tests/data_pipeline/test_data_ingestion.py
+          pytest tests/data_pipeline/test_data_preprocessing.py
+
       - name: model building
         run: python src/model_pipeline/model_building.py
 
       - name: model evaluation
         run: python src/model_pipeline/model_evaluation.py
-      - name: Run Tests
-        run: |
-          pytest tests/data_pipeline/test_data_ingestion.py
-          pytest tests/data_pipeline/test_data_preprocessing.py
 
       - name: Start Flask App
         run: |
