@@ -37,8 +37,8 @@ jobs:
 
       - name: Run Tests
         run: |
-          pytest src/data_pipeline/test_data_ingestion.py
-          pytest src/data_pipeline/test_data_preprocessing.py
+          PYTHONPATH=. pytest src/data_pipeline/test_data_ingestion.py
+          PYTHONPATH=. pytest src/data_pipeline/test_data_preprocessing.py
 
       - name: model building
         run: python src/model_pipeline/model_building.py
