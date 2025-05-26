@@ -35,15 +35,20 @@ jobs:
       - name: feature_engineering
         run: PYTHONPATH=. python src/data_pipeline/feature_engineering.py
 
-      - name: Initialize DVC
+      - name: Initialize DVC with Git context
         run: |
-          dvc init --no-scm || echo "DVC already initialized"
-
-      - run: |
+          git config --global user.name "nitinjmv"
+          git config --global user.email "nitinjmv@github.com"
           dvc init
+          git add .dvc .dvcignore
+          git commit -m "Initialize DVC"
+
+      - name: Track DVC Outputs
+        run: |
           dvc add data/raw/train.csv data/raw/test.csv
           dvc add data/interim/test_processed.csv data/interim/train_processed.csv
           dvc add data/processed/test_tfidf.csv data/processed/train_tfidf.csv
+          git add data/raw/*.csv.dvc data/interim/*.csv.dvc data/processed/*.csv.dvc
           git commit -m "Auto DVC update"
           dvc push
 
