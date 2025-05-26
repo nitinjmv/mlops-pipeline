@@ -1,0 +1,45 @@
+name: Preprocess, Train, Test, Validate
+
+on:
+  push:
+    paths:
+      - "data/**"
+      - "scripts/**"
+      - "tests/**"
+      - ".github/workflows/train.yml"
+
+jobs:
+  build-pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Load and Save Data
+        run: python src/data_pipeline.py
+
+      - name: Preprocess Data
+        run: python src/preprocess.py
+
+      - name: Train Model
+        run: python src/train.py
+
+      - name: Run Tests
+        run: |
+          pytest tests/data_pipeline/test_data_ingestion.py
+          pytest tests/data_pipeline/test_data_preprocessing.py
+
+      - name: Start Flask App
+        run: |
+          nohup python app/app.py &
