@@ -1,3 +1,10 @@
+import yaml
+import logging
+
+# logging configuration
+logger = logging.getLogger('data_ingestion')
+logger.setLevel('DEBUG')
+
 def load_params(params_path: str) -> dict:
     """Load parameters from a YAML file."""
     try:
