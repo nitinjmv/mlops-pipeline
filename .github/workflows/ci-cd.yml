@@ -35,6 +35,13 @@ jobs:
       - name: feature_engineering
         run: PYTHONPATH=. python src/data_pipeline/feature_engineering.py
 
+      - run: |
+          dvc add data/raw/train.csv data/raw/test.csv
+          dvc add data/interim/test_processed.csv data/interim/train_processed.csv
+          dvc add data/processed/test_tfidf.csv data/processed/train_tfidf.csv
+          git commit -m "Auto DVC update"
+          dvc push
+
       - name: Run Tests
         run: |
           PYTHONPATH=. pytest src/data_pipeline/test_data_ingestion.py

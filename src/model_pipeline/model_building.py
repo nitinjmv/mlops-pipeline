@@ -10,7 +10,6 @@ from src.utils.mlflow import dagshub_integration
 
 logger = logging_setup('model_building')
 
-
 def load_data(file_path: str) -> pd.DataFrame:
     """
     Load data from a CSV file.
