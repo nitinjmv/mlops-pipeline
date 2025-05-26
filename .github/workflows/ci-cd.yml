@@ -30,10 +30,10 @@ jobs:
         run: PYTHONPATH=. python src/data_pipeline/data_ingestion.py
 
       - name: data preprocessing
-        run: python src/data_pipeline/data_preprocessing.py
+        run: PYTHONPATH=. python src/data_pipeline/data_preprocessing.py
 
       - name: feature_engineering
-        run: python src/data_pipeline/feature_engineering.py
+        run: PYTHONPATH=. python src/data_pipeline/feature_engineering.py
 
       - name: Run Tests
         run: |

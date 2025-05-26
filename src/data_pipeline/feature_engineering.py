@@ -26,8 +26,10 @@ file_handler.setFormatter(formatter)
 logger.addHandler(console_handler)
 logger.addHandler(file_handler)
 
-from utils.commons import load_params
-from utils.mlflow import dagshub_integration
+from src.utils.commons import load_params, logging_setup
+from src.utils.mlflow import dagshub_integration
+
+logger = logging_setup('feature_engineering')
 
 
 def load_data(file_path: str) -> pd.DataFrame:
