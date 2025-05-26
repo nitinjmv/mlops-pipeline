@@ -2,6 +2,7 @@ name: Preprocess, Train, Test, Validate
 
 on:
   push:
+    branches: [main]
     paths:
       - "src/**"
       - "tests/**"
