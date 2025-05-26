@@ -3,10 +3,6 @@ name: Preprocess, Train, Test, Validate
 on:
   push:
     branches: [main]
-    paths:
-      - "src/**"
-      - "tests/**"
-      - ".github/workflows/ci-cd.yml"
 
 jobs:
   build-pipeline:
@@ -43,9 +39,9 @@ jobs:
           git add .dvc .dvcignore
           git commit -m "Initialize DVC"
 
-      - name: Configure DVC remote using GitHub repo
-        run: |
-          dvc remote add -d myremote https://github.com/nitinjmv/mlops-pipeline.git
+      # - name: Configure DVC remote using GitHub repo
+      #   run: |
+      #     dvc remote add -d myremote https://github.com/nitinjmv/mlops-pipeline.git
 
       - name: Track DVC Outputs
         run: |
@@ -55,12 +51,9 @@ jobs:
           git rm --cached data/interim/test_processed.csv
           git rm --cached data/processed/train_tfidf.csv
           git rm --cached data/processed/test_tfidf.csv
-          dvc add data/raw/train.csv data/raw/test.csv
-          dvc add data/interim/test_processed.csv data/interim/train_processed.csv
-          dvc add data/processed/test_tfidf.csv data/processed/train_tfidf.csv
-          git add data/processed/test_tfidf.csv.dvc data/processed/train_tfidf.csv.dvc
-          git add data/raw/train.csv.dvc data/raw/test.csv.dvc
-          git add data/interim/test_processed.csv.dvc data/interim/train_processed.csv.dvc
+          git add data/processed/test_tfidf.csv data/processed/train_tfidf.csv
+          git add data/raw/train.csv data/raw/test.csv
+          git add data/interim/test_processed.csv data/interim/train_processed.csv
           git commit -m "Auto DVC update"
           dvc push
 
