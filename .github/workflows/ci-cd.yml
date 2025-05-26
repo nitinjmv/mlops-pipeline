@@ -48,7 +48,9 @@ jobs:
           dvc add data/raw/train.csv data/raw/test.csv
           dvc add data/interim/test_processed.csv data/interim/train_processed.csv
           dvc add data/processed/test_tfidf.csv data/processed/train_tfidf.csv
-          git add data/raw/*.csv.dvc data/interim/*.csv.dvc data/processed/*.csv.dvc
+          git add data/raw/train.csv.dvc data/raw/test.csv.dvc
+          git add data/interim/test_processed.csv.dvc data/interim/train_processed.csv.dvc
+          git add data/processed/test_tfidf.csv.dvc data/processed/train_tfidf.csv.dvc
           git commit -m "Auto DVC update"
           dvc push
 
