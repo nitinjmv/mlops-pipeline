@@ -4,34 +4,11 @@ import pandas as pd
 import pickle
 import json
 from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_auc_score
-import logging
-import yaml
-from dvclive import Live
 
-# Ensure the "logs" directory exists
-log_dir = 'logs'
-os.makedirs(log_dir, exist_ok=True)
+from src.utils.commons import load_params, logging_setup
+from src.utils.mlflow import dagshub_integration
 
-# logging configuration
-logger = logging.getLogger('model_evaluation')
-logger.setLevel('DEBUG')
-
-console_handler = logging.StreamHandler()
-console_handler.setLevel('DEBUG')
-
-log_file_path = os.path.join(log_dir, 'model_evaluation.log')
-file_handler = logging.FileHandler(log_file_path)
-file_handler.setLevel('DEBUG')
-
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-console_handler.setFormatter(formatter)
-file_handler.setFormatter(formatter)
-
-logger.addHandler(console_handler)
-logger.addHandler(file_handler)
-
-from utils.commons import load_params
-from utils.mlflow import dagshub_integration
+logger = logging_setup('data_preprocessing')
 
 def load_model(file_path: str):
     """Load the trained model from a file."""
@@ -107,14 +84,6 @@ def main():
 
         metrics = evaluate_model(clf, X_test, y_test)
 
-        # Experiment tracking using dvclive
-        with Live(save_dvc_exp=True) as live:
-            live.log_metric('accuracy', accuracy_score(y_test, y_test))
-            live.log_metric('precision', precision_score(y_test, y_test))
-            live.log_metric('recall', recall_score(y_test, y_test))
-
-            live.log_params(params)
-        
         save_metrics(metrics, 'reports/metrics.json')
     except Exception as e:
         logger.error('Failed to complete the model evaluation process: %s', e)
