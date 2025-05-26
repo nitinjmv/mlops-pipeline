@@ -6,3 +6,4 @@ mlflow
 pytest
 streamlit
 requests
+nltk
