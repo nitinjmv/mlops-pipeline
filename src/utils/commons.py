@@ -1,9 +1,32 @@
 import yaml
 import logging
+import os
 
 # logging configuration
-logger = logging.getLogger('data_ingestion')
-logger.setLevel('DEBUG')
+# Ensure the "logs" directory exists
+def logging_setup(log_file_name):
+    log_dir = 'logs'
+    os.makedirs(log_dir, exist_ok=True)
+
+    # logging configuration
+    logger = logging.getLogger(log_file_name)
+    logger.setLevel('DEBUG')
+
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel('DEBUG')
+
+    log_file_path = os.path.join(log_dir, f'{log_file_name}.log')
+    file_handler = logging.FileHandler(log_file_path)
+    file_handler.setLevel('DEBUG')
+
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    console_handler.setFormatter(formatter)
+    file_handler.setFormatter(formatter)
+
+    logger.addHandler(console_handler)
+    logger.addHandler(file_handler)
+    return logger
+
 
 def load_params(params_path: str) -> dict:
     """Load parameters from a YAML file."""
