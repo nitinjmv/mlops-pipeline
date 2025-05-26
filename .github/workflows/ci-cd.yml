@@ -41,10 +41,10 @@ jobs:
           PYTHONPATH=. pytest src/data_pipeline/test_data_preprocessing.py
 
       - name: model building
-        run: python src/model_pipeline/model_building.py
+        run: PYTHONPATH=. python src/model_pipeline/model_building.py
 
       - name: model evaluation
-        run: python src/model_pipeline/model_evaluation.py
+        run: PYTHONPATH=. python src/model_pipeline/model_evaluation.py
 
       - name: Start Flask App
         run: |
