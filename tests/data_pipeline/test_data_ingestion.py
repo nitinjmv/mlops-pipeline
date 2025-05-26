@@ -4,7 +4,7 @@ import pytest
 from unittest.mock import patch, mock_open
 from io import StringIO
 
-from data_ingestion import (
+from src.data_ingestion import (
     load_params, load_data, preprocess_data, save_data
 )
 
