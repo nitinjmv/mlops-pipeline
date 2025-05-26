@@ -30,6 +30,7 @@ def logging_setup(log_file_name):
 
 def load_params(params_path: str) -> dict:
     """Load parameters from a YAML file."""
+    logger = logging_setup('commons')
     try:
         with open(params_path, 'r') as file:
             params = yaml.safe_load(file)
