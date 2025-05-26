@@ -45,10 +45,18 @@ jobs:
 
       - name: Track DVC Outputs
         run: |
+          git rm --cached data/raw/train.csv
+          git rm --cached data/raw/test.csv
+          git rm --cached data/interim/train_processed.csv
+          git rm --cached data/interim/test_processed.csv
+          git rm --cached data/processed/train_tfidf.csv
+          git rm --cached data/processed/test_tfidf.csv
           dvc add data/raw/train.csv data/raw/test.csv
           dvc add data/interim/test_processed.csv data/interim/train_processed.csv
           dvc add data/processed/test_tfidf.csv data/processed/train_tfidf.csv
           git add data/processed/test_tfidf.csv.dvc data/processed/train_tfidf.csv.dvc
+          git add data/raw/train.csv.dvc data/raw/test.csv.dvc
+          git add data/interim/test_processed.csv.dvc data/interim/train_processed.csv.dvc
           git commit -m "Auto DVC update"
           dvc push
 
