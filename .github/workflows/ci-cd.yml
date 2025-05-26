@@ -37,7 +37,7 @@ jobs:
         run: |
           git config --global user.name "nitinjmv"
           git config --global user.email "nitinjmv@github.com"
-          git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/mlops-pipeline
+          git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/nitinjmv/mlops-pipeline
 
       # - name: Configure DVC remote using GitHub repo
       #   run: |
