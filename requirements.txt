@@ -7,3 +7,4 @@ pytest
 streamlit
 requests
 nltk
+dagshub
