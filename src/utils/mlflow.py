@@ -1,4 +1,4 @@
-from commons import load_params
+from src.utils.commons import load_params
 import mlflow
 import dagshub
 
