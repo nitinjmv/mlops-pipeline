@@ -27,7 +27,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: data ingestion
-        run: python src/data_pipeline/data_ingestion.py
+        run: PYTHONPATH=. python src/data_pipeline/data_ingestion.py
 
       - name: data preprocessing
         run: python src/data_pipeline/data_preprocessing.py
