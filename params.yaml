@@ -1,3 +1,12 @@
+# MLflow properties
+mlflow:
+  repo_owner: nitinjmv
+  repo_name: mlops-pipeline
+  tracking_uri: https://dagshub.com/nitinjmv/mlops-pipeline.mlflow
+  experiment_name: exp1
+
+
+# Model training parameters
 data_ingestion:
   test_size: 0.20
 
