@@ -35,7 +35,12 @@ jobs:
       - name: feature_engineering
         run: PYTHONPATH=. python src/data_pipeline/feature_engineering.py
 
+      - name: Initialize DVC
+        run: |
+          dvc init --no-scm || echo "DVC already initialized"
+
       - run: |
+          dvc init
           dvc add data/raw/train.csv data/raw/test.csv
           dvc add data/interim/test_processed.csv data/interim/train_processed.csv
           dvc add data/processed/test_tfidf.csv data/processed/train_tfidf.csv

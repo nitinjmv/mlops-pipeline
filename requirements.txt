@@ -8,5 +8,4 @@ streamlit
 requests
 nltk
 dagshub
-dvclive
 dvc
