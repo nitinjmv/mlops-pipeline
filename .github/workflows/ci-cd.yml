@@ -31,13 +31,10 @@ jobs:
       - name: feature_engineering
         run: PYTHONPATH=. python src/data_pipeline/feature_engineering.py
 
-      # - name: Initialize DVC with Git context
-      #   run: |
-      #     git config --global user.name "nitinjmv"
-      #     git config --global user.email "nitinjmv@github.com"
-      #     dvc init
-      #     git add .dvc .dvcignore
-      #     git commit -m "Initialize DVC"
+      - name: Initialize DVC with Git context
+        run: |
+          git config --global user.name "nitinjmv"
+          git config --global user.email "nitinjmv@github.com"
 
       # - name: Configure DVC remote using GitHub repo
       #   run: |
