@@ -3,10 +3,9 @@ name: Preprocess, Train, Test, Validate
 on:
   push:
     paths:
-      - "data/**"
-      - "scripts/**"
+      - "src/**"
       - "tests/**"
-      - ".github/workflows/train.yml"
+      - ".github/workflows/ci-cd.yml"
 
 jobs:
   build-pipeline:
