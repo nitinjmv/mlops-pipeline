@@ -46,7 +46,7 @@ jobs:
           git add data/raw/train.csv data/raw/test.csv
           git add data/interim/test_processed.csv data/interim/train_processed.csv
           git commit -m "Auto DVC update"
-          dvc push
+          git push
 
       - name: Run Tests
         run: |
