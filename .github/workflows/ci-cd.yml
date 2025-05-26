@@ -43,6 +43,10 @@ jobs:
           git add .dvc .dvcignore
           git commit -m "Initialize DVC"
 
+      - name: Configure DVC remote using GitHub repo
+        run: |
+          dvc remote add -d myremote https://github.com/nitinjmv/mlops-pipeline.git
+
       - name: Track DVC Outputs
         run: |
           git rm --cached data/raw/train.csv
