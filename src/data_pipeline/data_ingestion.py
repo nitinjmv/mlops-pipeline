@@ -3,7 +3,7 @@ import os
 from sklearn.model_selection import train_test_split
 
 from src.utils.commons import load_params, logging_setup
-from utils.mlflow import dagshub_integration
+from src.utils.mlflow import dagshub_integration
 
 logger = logging_setup('data_ingestion')
 
