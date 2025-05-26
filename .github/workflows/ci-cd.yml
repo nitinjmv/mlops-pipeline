@@ -32,9 +32,12 @@ jobs:
         run: PYTHONPATH=. python src/data_pipeline/feature_engineering.py
 
       - name: Initialize DVC with Git context
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
         run: |
           git config --global user.name "nitinjmv"
           git config --global user.email "nitinjmv@github.com"
+          git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/mlops-pipeline
 
       # - name: Configure DVC remote using GitHub repo
       #   run: |
