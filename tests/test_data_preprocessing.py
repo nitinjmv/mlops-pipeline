@@ -1,5 +1,5 @@
 import pandas as pd
-from src.data_preprocessing import transform_text, preprocess_df
+from src.data_pipeline.data_preprocessing import transform_text, preprocess_df
 
 def test_transform_text():
     raw_text = "Hello!!! This is a TEST, with numbers 123 and symbols #@!"
