@@ -8,7 +8,7 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_a
 from src.utils.commons import load_params, logging_setup
 from src.utils.mlflow import dagshub_integration
 
-logger = logging_setup('data_preprocessing')
+logger = logging_setup('model_evaluation')
 
 def load_model(file_path: str):
     """Load the trained model from a file."""
