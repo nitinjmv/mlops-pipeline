@@ -1,1 +1,5 @@
-url = https://dagshub.com/nitinjmv/mlops-pipeline.dvc
+[core]
+    remote = origin
+    
+['remote "origin"']
+    url = https://dagshub.com/nitinjmv/mlops-pipeline.dvc
