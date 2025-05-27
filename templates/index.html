@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Model Prediction UI</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Model Prediction</h1>
+      <form method="POST">
+        <input
+          type="text"
+          name="user_input"
+          placeholder="Enter a value"
+          required
+        />
+        <button type="submit">Predict</button>
+      </form>
+      {% if prediction %}
+      <div class="result">
+        <h2>Result:</h2>
+        <p>{{ prediction }}</p>
+      </div>
+      {% endif %}
+    </div>
+  </body>
+</html>
