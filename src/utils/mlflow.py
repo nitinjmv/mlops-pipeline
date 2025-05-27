@@ -1,6 +1,7 @@
 from src.utils.commons import load_params, logging_setup
 import mlflow
 import dagshub
+import os
 
 params = load_params(params_path='./params.yaml')
 experiment_name = params['mlflow']['experiment_name']
