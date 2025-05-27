@@ -27,7 +27,6 @@ logger.addHandler(console_handler)
 logger.addHandler(file_handler)
 
 from src.utils.commons import load_params, logging_setup
-from src.utils.mlflow import dagshub_integration
 
 logger = logging_setup('feature_engineering')
 

@@ -54,14 +54,16 @@ jobs:
 
       - name: Track and commit processed data
         run: |
+          dvc add data/processed/test_tfidf.csv data/processed/train_tfidf.csv
+          git add data/processed/test_tfidf.csv.dvc data/processed/train_tfidf.csv.dvc
+          git add data/processed/.gitignore
+
           if [[ -n "$(git status --porcelain)" ]]; then
-            dvc add data/processed/test_tfidf.csv data/processed/train_tfidf.csv
-            git add data/processed/test_tfidf.csv.dvc data/processed/train_tfidf.csv.dvc
-            git commit -m "Auto DVC update"
-            git push
-            dvc push
+              git commit -m "Auto DVC update"
+              git push
+              dvc push
           else
-            echo "WARNING: No changes were detected."                       
+              echo "WARNING: No changes were detected."
           fi
       - name: Run Tests
         run: |

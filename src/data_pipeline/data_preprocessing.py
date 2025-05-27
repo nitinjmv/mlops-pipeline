@@ -9,7 +9,6 @@ nltk.download('stopwords')
 nltk.download('punkt_tab')
 
 from src.utils.commons import load_params, logging_setup
-from src.utils.mlflow import dagshub_integration
 
 logger = logging_setup('data_preprocessing')
 

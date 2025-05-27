@@ -7,7 +7,6 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_a
 from mlflow import start_run, set_experiment, log_param, log_metric, log_artifact
 
 from src.utils.commons import load_params, logging_setup
-from src.utils.mlflow import dagshub_integration
 
 logger = logging_setup('model_evaluation')
 
@@ -77,8 +76,6 @@ def save_metrics(metrics: dict, file_path: str) -> None:
 
 def main():
     try:
-        # Enable MLflow/DagsHub integration
-        dagshub_integration()
         set_experiment("model-evaluation")
 
         with start_run():

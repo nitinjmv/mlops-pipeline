@@ -52,8 +52,6 @@ from mlflow import start_run, set_experiment, log_param, log_metric, log_artifac
 
 def main():
     try:
-        # Start MLflow/DagsHub integration
-        #dagshub_integration()
         set_experiment("data-ingestion")
 
         with start_run():

@@ -6,7 +6,6 @@ import logging
 from sklearn.ensemble import RandomForestClassifier
 from mlflow import log_metric, log_param, log_artifact, set_experiment, start_run
 from src.utils.commons import load_params, logging_setup
-from src.utils.mlflow import dagshub_integration
 
 logger = logging_setup('model_building')
 
@@ -84,7 +83,6 @@ def save_model(model, file_path: str) -> None:
 
 def main():
     try:
-        dagshub_integration()
         set_experiment("model-building")
 
         with start_run():
