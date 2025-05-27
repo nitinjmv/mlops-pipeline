@@ -1,0 +1,5 @@
+outs:
+- md5: 53b8ab6c21a970f16f98d990f69629fd
+  size: 659133
+  hash: md5
+  path: train_tfidf.csv
