@@ -63,12 +63,13 @@ jobs:
         run: PYTHONPATH=. python src/model_pipeline/model_building.py
       - name: model evaluation
         run: PYTHONPATH=. python src/model_pipeline/model_evaluation.py
-      - name: Model push
+
+      - name: Push model and metrics to DagsHub via DVC
         run: |
-          if [[ `git status --porcelain` ]]; then
+          if [[ -n "$(git status --porcelain)" ]]; then
             dvc add models/*.pkl reports/metrics.json
             git add models/*.pkl.dvc reports/metrics.json.dvc
-            git commit -m "Auto DVC update"
+            git commit -m "Auto DVC update" || echo "Nothing to commit"
             git push
             dvc push
           else
