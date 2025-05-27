@@ -31,30 +31,19 @@ jobs:
       - name: feature_engineering
         run: PYTHONPATH=. python src/data_pipeline/feature_engineering.py
 
-      - name: Initialize DVC with Git context
+      - name: Git Configuration
         env:
           GH_TOKEN: ${{ secrets.GH_PAT }}
         run: |
           git config --global user.name "nitinjmv"
           git config --global user.email "nitinjmv@github.com"
-          dvc init
-          dvc config core.autostage true
-          git add .dvc .dvcignore
-          git commit -m "Initialize DVC"
+          git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/nitinjmv/mlops-pipeline
 
-      - name: Configure DVC remote using GitHub repo
+      - name: Push Processed data to Git
         run: |
-          dvc remote add -d myremote https://x-access-token:${GH_TOKEN}@github.com/nitinjmv/mlops-pipeline
-
-      - name: Track DVC Outputs
-        run: |
-          git rm --cached data/processed/train_tfidf.csv
-          git rm --cached data/processed/test_tfidf.csv
-          dvc add data/processed/test_tfidf.csv 
-          dvc add data/processed/train_tfidf.csv
-          git add data/processed/test_tfidf.csv.dvc data/processed/train_tfidf.csv.dvc
-          git commit -m "Auto DVC update"
-          dvc push
+          git add data/processed/test_processed.csv.dvc data/processed/train_processed.csv.dvc
+          git commit -m "processed data added"
+          git push
 
       - name: Run Tests
         run: |
