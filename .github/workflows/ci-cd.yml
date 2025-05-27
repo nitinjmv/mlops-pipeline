@@ -47,7 +47,7 @@ jobs:
         run: |
           dvc add data/processed/test_tfidf.csv data/processed/train_tfidf.csv
           git add data/processed/test_tfidf.csv.dvc data/processed/train_tfidf.csv.dvc
-          git commit -m "Auto DVC update"
+          git commit -a -m "Auto DVC update"
           git push
           dvc push
       - name: Run Tests
@@ -63,7 +63,7 @@ jobs:
         run: |
           dvc add models/*.pkl reports/metrics.json
           git add models/*.pkl.dvc reports/metrics.json.dvc
-          git commit -m "Auto DVC update"
+          git commit -a -m "Auto DVC update"
           git push
           dvc push
 
