@@ -45,11 +45,15 @@ jobs:
           dvc remote default origin
       - name: Track and commit processed data
         run: |
-          dvc add data/processed/test_tfidf.csv data/processed/train_tfidf.csv
-          git add data/processed/test_tfidf.csv.dvc data/processed/train_tfidf.csv.dvc
-          git commit -a -m "Auto DVC update"
-          git push
-          dvc push
+          if [[ `git status --porcelain` ]]; then
+            dvc add data/processed/test_tfidf.csv data/processed/train_tfidf.csv
+            git add data/processed/test_tfidf.csv.dvc data/processed/train_tfidf.csv.dvc
+            git commit -a -m "Auto DVC update"
+            git push
+            dvc push
+          else
+            echo "WARNING: No changes were detected."
+          fi
       - name: Run Tests
         run: |
           PYTHONPATH=. pytest src/data_pipeline/test_data_ingestion.py
