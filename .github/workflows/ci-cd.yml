@@ -50,11 +50,6 @@ jobs:
           git commit -m "Auto DVC update"
           git push
           dvc push
-      - name: check DVC
-        run: |
-          dvc remote list
-          git ls-files | grep "\.dvc"
-
       - name: Run Tests
         run: |
           PYTHONPATH=. pytest src/data_pipeline/test_data_ingestion.py
@@ -62,6 +57,14 @@ jobs:
 
       - name: model building
         run: PYTHONPATH=. python src/model_pipeline/model_building.py
+
+      - name: Model push
+        run: |
+          dvc add models/*.pkl report/metrics.json
+          git add models/*.pkl.dvc report/metrics.json.dvc
+          git commit -m "Auto DVC update"
+          git push
+          dvc push
 
       - name: model evaluation
         run: PYTHONPATH=. python src/model_pipeline/model_evaluation.py
