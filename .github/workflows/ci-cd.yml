@@ -48,6 +48,8 @@ jobs:
 
       - name: Track DVC Outputs
         run: |
+          git rm --cached data/processed/train_tfidf.csv
+          git rm --cached data/processed/test_tfidf.csv
           dvc add data/processed/test_tfidf.csv 
           dvc add data/processed/train_tfidf.csv
           git add data/processed/test_tfidf.csv.dvc data/processed/train_tfidf.csv.dvc
