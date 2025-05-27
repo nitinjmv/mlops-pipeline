@@ -4,7 +4,7 @@ import pandas as pd
 import pickle
 import logging
 from sklearn.ensemble import RandomForestClassifier
-
+from mlflow import log_metric, log_param, log_artifact, set_experiment, start_run
 from src.utils.commons import load_params, logging_setup
 from src.utils.mlflow import dagshub_integration
 
@@ -81,21 +81,54 @@ def save_model(model, file_path: str) -> None:
         logger.error('Error occurred while saving the model: %s', e)
         raise
 
+
 def main():
     try:
-        params = load_params('./params.yaml')['model_building']
-        train_data = load_data('./data/processed/train_tfidf.csv')
-        X_train = train_data.iloc[:, :-1].values
-        y_train = train_data.iloc[:, -1].values
+        dagshub_integration()
+        set_experiment("model-building")
 
-        clf = train_model(X_train, y_train, params)
-        
-        model_save_path = 'models/model.pkl'
-        save_model(clf, model_save_path)
+        with start_run():
+            params = load_params('./params.yaml')['model_building']
+            log_param("n_estimators", params["n_estimators"])
+            log_param("random_state", params["random_state"])
+
+            train_data = load_data('./data/processed/train_tfidf.csv')
+            X_train = train_data.iloc[:, :-1].values
+            y_train = train_data.iloc[:, -1].values
+
+            clf = train_model(X_train, y_train, params)
+
+            # You can log training metrics here if applicable
+            log_metric("num_training_samples", len(X_train))
+
+            model_save_path = 'models/model.pkl'
+            save_model(clf, model_save_path)
+
+            # Log the model file and any other outputs
+            log_artifact(model_save_path)
+            if os.path.exists("reports/metrics.json"):
+                log_artifact("reports/metrics.json")
 
     except Exception as e:
         logger.error('Failed to complete the model building process: %s', e)
         print(f"Error: {e}")
 
-if __name__ == '__main__':
-    main()
+
+# def main():
+#     try:
+#         params = load_params('./params.yaml')['model_building']
+#         train_data = load_data('./data/processed/train_tfidf.csv')
+#         X_train = train_data.iloc[:, :-1].values
+#         y_train = train_data.iloc[:, -1].values
+
+#         clf = train_model(X_train, y_train, params)
+        
+#         model_save_path = 'models/model.pkl'
+#         save_model(clf, model_save_path)
+
+#     except Exception as e:
+#         logger.error('Failed to complete the model building process: %s', e)
+#         print(f"Error: {e}")
+
+# if __name__ == '__main__':
+#     main()

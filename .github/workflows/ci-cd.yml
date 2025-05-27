@@ -58,6 +58,10 @@ jobs:
         run: |
           PYTHONPATH=. pytest src/data_pipeline/test_data_ingestion.py
           PYTHONPATH=. pytest src/data_pipeline/test_data_preprocessing.py
+      - name: Export DAGSHUB credentials
+        run: |
+          export DAGSHUB_USERNAME=${{ secrets.DAGSHUB_USERNAME }}
+          export DAGSHUB_TOKEN=${{ secrets.DAGSHUB_TOKEN }}
 
       - name: model building
         run: PYTHONPATH=. python src/model_pipeline/model_building.py
