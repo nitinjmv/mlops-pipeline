@@ -31,19 +31,29 @@ jobs:
       - name: feature_engineering
         run: PYTHONPATH=. python src/data_pipeline/feature_engineering.py
 
-      - name: Git Configuration
-        env:
-          GH_TOKEN: ${{ secrets.GH_PAT }}
+      - name: Configure Git
         run: |
           git config --global user.name "nitinjmv"
           git config --global user.email "nitinjmv@github.com"
-          git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/nitinjmv/mlops-pipeline
 
-      - name: Push Processed data to Git
+      - name: Authenticate DVC remote (DagsHub)
         run: |
-          git add data/processed/test_processed.csv.dvc data/processed/train_processed.csv.dvc
-          git commit -m "processed data added"
-          git push
+          dvc remote modify origin --local auth basic
+          dvc remote modify origin --local user "${{ secrets.DAGSHUB_USERNAME }}"
+          dvc remote modify origin --local password "${{ secrets.DAGSHUB_TOKEN }}"
+
+      - name: Pull latest DVC state
+        run: dvc pull || true
+
+      - name: Track and commit processed data
+        run: |
+          dvc add data/processed/test_tfidf.csv
+          dvc add data/processed/train_tfidf.csv
+          git add data/processed/*.dvc
+          git commit -m "Auto DVC tracking update" || echo "Nothing to commit"
+
+      - name: Push DVC data to DagsHub
+        run: dvc push
 
       - name: Run Tests
         run: |
