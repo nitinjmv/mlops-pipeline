@@ -36,9 +36,6 @@ jobs:
         run: |
           git remote set-url origin https://${{ secrets.DAGSHUB_USERNAME }}:${{ secrets.DAGSHUB_TOKEN }}@dagshub.com/nitinjmv/mlops-pipeline.git
 
-      - name: Set MLflow environment variables
-        run: |
-
       - name: Authenticate DVC remote (DagsHub)
         run: |
           dvc remote modify origin --local auth basic
