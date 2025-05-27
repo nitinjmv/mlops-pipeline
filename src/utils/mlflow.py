@@ -1,7 +1,6 @@
 from src.utils.commons import load_params, logging_setup
 import mlflow
 import dagshub
-import os
 
 params = load_params(params_path='./params.yaml')
 experiment_name = params['mlflow']['experiment_name']
@@ -16,8 +15,8 @@ logger.debug('repo_name %s', repo_name)
 logger.debug('tracking_uri %s', tracking_uri)
 
 def dagshub_integration():
-    mlflow.set_tracking_username(os.getenv("DAGSHUB_USERNAME"))
-    mlflow.set_tracking_password(os.getenv("DAGSHUB_TOKEN"))
+    dagshub.init(repo_owner = repo_owner, repo_name = repo_name, mlflow=True)
     mlflow.set_tracking_uri(tracking_uri)
-    mlflow.set_experiment(experiment_name)
     mlflow.autolog()
+    mlflow.set_experiment(experiment_name)
+    return dagshub
