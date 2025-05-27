@@ -86,7 +86,9 @@ def main():
     try:
         set_experiment("model-building")
 
-        with start_run():
+        with mlflow.start_run() as run:
+            run_id = run.info.run_id
+            logger.debug(f'run_id {run_id}')
             params = load_params('./params.yaml')['model_building']
             log_param("n_estimators", params["n_estimators"])
             log_param("random_state", params["random_state"])
