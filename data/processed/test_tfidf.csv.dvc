@@ -1,5 +1,0 @@
-outs:
-- md5: 3f43bbdf96ca4b8801a23353e2794d0a
-  size: 172370
-  hash: md5
-  path: test_tfidf.csv
