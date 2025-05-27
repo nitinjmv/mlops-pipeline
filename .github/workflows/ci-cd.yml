@@ -46,13 +46,13 @@ jobs:
       - name: Track and commit processed data
         run: |
           if [[ -n "$(git status --porcelain)" ]]; then
-            echo "WARNING: No changes were detected."           
-          else
             dvc add data/processed/test_tfidf.csv data/processed/train_tfidf.csv
             git add data/processed/test_tfidf.csv.dvc data/processed/train_tfidf.csv.dvc
             git commit -m "Auto DVC update"
             git push
             dvc push
+          else
+            echo "WARNING: No changes were detected."                       
           fi
       - name: Run Tests
         run: |
