@@ -31,13 +31,11 @@ jobs:
       - name: feature_engineering
         run: PYTHONPATH=. python src/data_pipeline/feature_engineering.py
 
-      - name: Configure Git & DVC
+      - name: Configure Git
         run: |
           git config --global user.name "nitinjmv"
           git config --global user.email "nitinjmv@github.com"
           dvc config core.autostage true
-          git add .dvc .dvcignore
-          git commit -m "Initialize DVC"
 
       - name: Authenticate DVC remote (DagsHub)
         run: |
