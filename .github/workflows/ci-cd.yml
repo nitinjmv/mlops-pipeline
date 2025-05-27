@@ -61,11 +61,15 @@ jobs:
         run: PYTHONPATH=. python src/model_pipeline/model_evaluation.py
       - name: Model push
         run: |
-          dvc add models/*.pkl reports/metrics.json
-          git add models/*.pkl.dvc reports/metrics.json.dvc
-          git commit -a -m "Auto DVC update"
-          git push
-          dvc push
+          if [[ `git status --porcelain` ]]; then
+            dvc add models/*.pkl reports/metrics.json
+            git add models/*.pkl.dvc reports/metrics.json.dvc
+            git commit -a -m "Auto DVC update"
+            git push
+            dvc push
+          else
+            echo "WARNING: No changes were detected."
+          fi
 
       - name: Start Flask App
         run: |
