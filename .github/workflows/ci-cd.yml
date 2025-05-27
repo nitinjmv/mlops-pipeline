@@ -29,7 +29,7 @@ jobs:
 
       - name: Configure DagsHub remote with authentication
         run: |
-          git remote set-url origin https://${{ secrets.DAGSHUB_USERNAME }}:${{ secrets.DAGSHUB_TOKEN }}@dagshub.com/<user>/<repo>.git
+          git remote set-url origin https://${{ secrets.DAGSHUB_USERNAME }}:${{ secrets.DAGSHUB_TOKEN }}@dagshub.com/nitinjmv/mlops-pipeline.git
 
       - name: Authenticate DVC remote (DagsHub)
         run: |
