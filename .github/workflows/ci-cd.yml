@@ -62,8 +62,8 @@ jobs:
         run: PYTHONPATH=. python src/model_pipeline/model_evaluation.py
       - name: Model push
         run: |
-          dvc add models/*.pkl report/metrics.json
-          git add models/*.pkl.dvc report/metrics.json.dvc
+          dvc add models/*.pkl reports/metrics.json
+          git add models/*.pkl.dvc reports/metrics.json.dvc
           git commit -m "Auto DVC update"
           git push
           dvc push
