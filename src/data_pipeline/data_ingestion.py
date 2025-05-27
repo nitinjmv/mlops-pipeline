@@ -4,7 +4,6 @@ from sklearn.model_selection import train_test_split
 from mlflow import start_run, set_experiment, log_param, log_metric, log_artifact
 
 from src.utils.commons import load_params, logging_setup
-from src.utils.mlflow import dagshub_integration
 
 logger = logging_setup('data_ingestion')
 
