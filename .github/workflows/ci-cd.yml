@@ -38,28 +38,19 @@ jobs:
           git config --global user.name "nitinjmv"
           git config --global user.email "nitinjmv@github.com"
           dvc init
+          dvc config core.autostage true
           git add .dvc .dvcignore
           git commit -m "Initialize DVC"
-          git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/nitinjmv/mlops-pipeline
 
       - name: Configure DVC remote using GitHub repo
         run: |
-          dvc remote add -d myremote https://github.com/nitinjmv/mlops-pipeline.git
+          dvc remote add -d myremote https://x-access-token:${GH_TOKEN}@github.com/nitinjmv/mlops-pipeline
 
       - name: Track DVC Outputs
         run: |
-          git rm --cached data/raw/train.csv
-          git rm --cached data/raw/test.csv
-          git rm --cached data/interim/train_processed.csv
-          git rm --cached data/interim/test_processed.csv
-          git rm --cached data/processed/train_tfidf.csv
-          git rm --cached data/processed/test_tfidf.csv
-          dvc add data/raw/train.csv data/raw/test.csv
-          dvc add data/interim/test_processed.csv data/interim/train_processed.csv
-          dvc add data/processed/test_tfidf.csv data/processed/train_tfidf.csv
+          dvc add data/processed/test_tfidf.csv 
+          dvc add data/processed/train_tfidf.csv
           git add data/processed/test_tfidf.csv.dvc data/processed/train_tfidf.csv.dvc
-          git add data/raw/train.csv.dvc data/raw/test.csv.dvc
-          git add data/interim/test_processed.csv.dvc data/interim/train_processed.csv.dvc
           git commit -m "Auto DVC update"
           dvc push
 
