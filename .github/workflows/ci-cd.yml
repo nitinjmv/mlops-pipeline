@@ -94,6 +94,12 @@ jobs:
             echo "WARNING: No changes were detected."
           fi
 
+      - name: Push model to DagsHub Model Registry
+        run: |
+          mlflow models register \
+            --model-uri "runs:/<run_id>/models" \
+            --name "<model_registry_name>"
+
       - name: Start Flask App
         run: |
           nohup python src/app/app.py &

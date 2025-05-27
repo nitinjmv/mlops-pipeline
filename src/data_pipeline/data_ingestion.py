@@ -54,7 +54,6 @@ def main():
         set_experiment("data-ingestion")
 
         with start_run():
-            mlflow.aut
             params = load_params(params_path='./params.yaml')
             test_size = params['data_ingestion']['test_size']
             log_param("test_size", test_size)
