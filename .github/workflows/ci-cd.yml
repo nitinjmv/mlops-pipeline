@@ -35,7 +35,6 @@ jobs:
         run: |
           git config --global user.name "nitinjmv"
           git config --global user.email "nitinjmv@github.com"
-          dvc init
           dvc config core.autostage true
           git add .dvc .dvcignore
           git commit -m "Initialize DVC"
