@@ -57,7 +57,8 @@ jobs:
 
       - name: model building
         run: PYTHONPATH=. python src/model_pipeline/model_building.py
-
+      - name: model evaluation
+        run: PYTHONPATH=. python src/model_pipeline/model_evaluation.py
       - name: Model push
         run: |
           dvc add models/*.pkl report/metrics.json
@@ -65,9 +66,6 @@ jobs:
           git commit -m "Auto DVC update"
           git push
           dvc push
-
-      - name: model evaluation
-        run: PYTHONPATH=. python src/model_pipeline/model_evaluation.py
 
       - name: Start Flask App
         run: |
