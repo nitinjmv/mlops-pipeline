@@ -42,8 +42,8 @@ jobs:
 
       - name: Authenticate DVC remote (DagsHub)
         run: |
-          dvc remote add origin https://dagshub.com/nitinjmv/mlops-pipeline.dvc
           dvc remote modify origin --local auth basic
+          dvc remote add origin https://dagshub.com/nitinjmv/mlops-pipeline.dvc
           dvc remote modify origin --local user "${{ secrets.DAGSHUB_USERNAME }}"
           dvc remote modify origin --local password "${{ secrets.DAGSHUB_TOKEN }}"
           dvc remote default origin
@@ -53,13 +53,16 @@ jobs:
 
       - name: Track and commit processed data
         run: |
-          dvc add data/processed/test_tfidf.csv
-          dvc add data/processed/train_tfidf.csv
           git add data/processed/*.dvc
           git commit -m "Auto DVC tracking update" || echo "Nothing to commit"
-
-      - name: Push DVC data to DagsHub
-        run: dvc push
+          git push
+          dvc add data/processed/test_tfidf.csv
+          dvc add data/processed/train_tfidf.csv
+          dvc push
+      - name: check DVC
+        run: |
+          dvc remote list
+          git ls-files | grep "\.dvc"
 
       - name: Run Tests
         run: |
