@@ -49,11 +49,9 @@ jobs:
 
       - name: Track and commit processed data
         run: |
-          git add data/processed/*.dvc
-          git commit -m "Auto DVC tracking update" || echo "Nothing to commit"
-          git push
-          dvc add data/processed/test_tfidf.csv
-          dvc add data/processed/train_tfidf.csv
+          dvc add data/processed/test_tfidf.csv data/processed/train_tfidf.csv
+          git add data/processed/test_tfidf.csv.dvc data/processed/train_tfidf.csv.dvc
+          git commit -m "Auto DVC update"
           dvc push
       - name: check DVC
         run: |
