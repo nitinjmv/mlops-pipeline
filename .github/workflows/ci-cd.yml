@@ -27,15 +27,13 @@ jobs:
           git config --global user.email "nitinjmv@github.com"
           dvc config core.autostage true
 
-      - name: Authenticate DVC remote (DagsHub)
+      - name: Configure DagsHub remote with authentication
         run: |
-          dvc remote modify origin --local auth basic
-          dvc remote modify origin --local user "${{ secrets.DAGSHUB_USERNAME }}"
-          dvc remote modify origin --local password "${{ secrets.DAGSHUB_TOKEN }}"
-          dvc remote default origin
+          git remote set-url origin https://${{ secrets.DAGSHUB_USERNAME }}:${{ secrets.DAGSHUB_TOKEN }}@dagshub.com/nitinjmv/mlops-pipeline.git
 
       - name: data ingestion
         run: PYTHONPATH=. python src/data_pipeline/data_ingestion.py
+
       - name: data preprocessing
         run: PYTHONPATH=. python src/data_pipeline/data_preprocessing.py
 
