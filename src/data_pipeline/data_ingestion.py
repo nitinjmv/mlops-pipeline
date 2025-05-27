@@ -1,11 +1,12 @@
 import pandas as pd
 import os
 from sklearn.model_selection import train_test_split
-from mlflow import start_run, set_experiment, log_param, log_metric, log_artifact
+from mlflow import start_run, set_experiment, log_param, log_metric, log_artifact, mlflow
 
 from src.utils.commons import load_params, logging_setup
 
 logger = logging_setup('data_ingestion')
+mlflow.autolog()
 
 def load_data(data_url: str) -> pd.DataFrame:
     """Load data from a CSV file."""
@@ -47,13 +48,13 @@ def save_data(train_data: pd.DataFrame, test_data: pd.DataFrame, data_path: str)
         raise
 
 
-from mlflow import start_run, set_experiment, log_param, log_metric, log_artifact
 
 def main():
     try:
         set_experiment("data-ingestion")
 
         with start_run():
+            mlflow.aut
             params = load_params(params_path='./params.yaml')
             test_size = params['data_ingestion']['test_size']
             log_param("test_size", test_size)

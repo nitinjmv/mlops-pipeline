@@ -4,11 +4,13 @@ import pandas as pd
 import pickle
 import json
 from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_auc_score
-from mlflow import start_run, set_experiment, log_param, log_metric, log_artifact
+from mlflow import start_run, set_experiment, log_param, log_metric, log_artifact, mlflow
 
 from src.utils.commons import load_params, logging_setup
 
 logger = logging_setup('model_evaluation')
+mlflow.autolog()
+
 
 def load_model(file_path: str):
     """Load the trained model from a file."""

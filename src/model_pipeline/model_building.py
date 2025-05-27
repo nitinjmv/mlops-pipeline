@@ -4,10 +4,11 @@ import pandas as pd
 import pickle
 import logging
 from sklearn.ensemble import RandomForestClassifier
-from mlflow import log_metric, log_param, log_artifact, set_experiment, start_run
+from mlflow import log_metric, log_param, log_artifact, set_experiment, start_run, mlflow
 from src.utils.commons import load_params, logging_setup
 
 logger = logging_setup('model_building')
+mlflow.autolog()
 
 def load_data(file_path: str) -> pd.DataFrame:
     """
