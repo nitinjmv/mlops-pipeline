@@ -4,6 +4,7 @@ import pandas as pd
 import pickle
 import json
 from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_auc_score
+from mlflow import start_run, set_experiment, log_param, log_metric, log_artifact
 
 from src.utils.commons import load_params, logging_setup
 from src.utils.mlflow import dagshub_integration
@@ -73,7 +74,6 @@ def save_metrics(metrics: dict, file_path: str) -> None:
         logger.error('Error occurred while saving the metrics: %s', e)
         raise
 
-from mlflow import log_metric, log_artifact, start_run, set_experiment
 
 def main():
     try:
