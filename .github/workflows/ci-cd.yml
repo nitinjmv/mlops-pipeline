@@ -48,7 +48,7 @@ jobs:
           git add data/processed/test_tfidf.csv data/processed/train_tfidf.csv
           git add data/raw/train.csv data/raw/test.csv
           git add data/interim/test_processed.csv data/interim/train_processed.csv
-          git commit -m "git"
+          git commit -m "git test"
           git push
 
       - name: Run Tests
