@@ -42,7 +42,7 @@ def train_model(X_train: np.ndarray, y_train: np.ndarray, params: dict) -> Rando
         logger.debug('Model training started with %d samples', X_train.shape[0])
         clf.fit(X_train, y_train)
         logger.debug('Model training completed')
-        mlflow.sklearn.log_model(sk_model=clf, artifact_path="random_forest_classifier")
+        mlflow.sklearn.log_model(sk_model=clf, artifact_path="random_forest_classifier", input_example=params["experiment_name"])
         mlflow.log_param("n_estimators", params['n_estimators'])
         mlflow.log_param("random_state", params['random_state'])
         mlflow.log_metric("accuracy", clf.score(X_train, y_train))
@@ -73,13 +73,13 @@ def save_model(model, file_path: str) -> None:
 
 def main():
     try:
-        set_experiment("model-building")
 
         with mlflow.start_run() as run:
             # Optionally log something
             mlflow.log_param("test_param", 123)
 
             params = load_params('./params.yaml')['model_building']
+            set_experiment(f'model-building: {params["experiment_name"]}')
             log_param("n_estimators", params["n_estimators"])
             log_param("random_state", params["random_state"])
 

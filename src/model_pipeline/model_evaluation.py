@@ -79,9 +79,9 @@ def save_metrics(metrics: dict, file_path: str) -> None:
 
 def main():
     try:
-        set_experiment("model-evaluation")
 
         with start_run():
+            set_experiment("model-evaluation")
             params = load_params(params_path='./params.yaml')
             clf = load_model('./models/model.pkl')
             test_data = load_data('./data/processed/test_tfidf.csv')
@@ -90,11 +90,6 @@ def main():
             y_test = test_data.iloc[:, -1].values
 
             metrics = evaluate_model(clf, X_test, y_test)
-
-            mlflow.sklearn.log_model(sk_model=clf, artifact_path="random_forest_classifier")
-            mlflow.log_param("n_estimators", params['n_estimators'])
-            mlflow.log_param("random_state", params['random_state'])
-            mlflow.log_metric("accuracy", clf.score(X_test, y_test))
 
             # Log metrics to MLflow
             for key, value in metrics.items():
