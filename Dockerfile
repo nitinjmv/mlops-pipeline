@@ -4,7 +4,7 @@ WORKDIR /app
 
 RUN apt-get update && apt-get install -y git
 
-RUN pip install pandas scikit-learn mlflow
+RUN pip install pandas scikit-learn dvc mlflow
 
 RUN git clone https://dagshub.com/nitinjmv/mlops-pipeline.git . \
     && dvc pull models/model.pkl.dvc \
