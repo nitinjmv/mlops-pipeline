@@ -93,7 +93,6 @@ jobs:
             else
               git commit -m "Auto DVC update"
               git push
-              dvc push
            fi
           fi
 
