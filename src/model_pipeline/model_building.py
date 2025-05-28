@@ -108,6 +108,7 @@ def main():
 
             # Log the model file and any other outputs
             log_artifact(model_save_path)
+            mlflow.log_model()
             if os.path.exists("reports/metrics.json"):
                 log_artifact("reports/metrics.json")
 

@@ -98,6 +98,7 @@ def main():
             metrics_path = 'reports/metrics.json'
             save_metrics(metrics, metrics_path)
             log_artifact(metrics_path)
+            mlflow.log_model()
 
     except Exception as e:
         logger.error('Failed to complete the model evaluation process: %s', e)
