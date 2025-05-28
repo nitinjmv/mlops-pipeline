@@ -42,14 +42,14 @@ jobs:
 
       - name: Configure DagsHub remote with authentication
         run: |
-          git remote set-url origin https://${{ secrets.DAGSHUB_USERNAME }}:${{ secrets.DAGSHUB_TOKEN }}@dagshub.com/nitinjmv/mlops-pipeline.git
+          git remote set-url origin https://x-access-token:${{env.GH_TOKEN}}@github.com/nitinjmv/mlops-pipeline
           dvc remote add -d myremote https://github.com/nitinjmv/mlops-pipeline.git
 
       - name: Authenticate DVC remote (DagsHub)
         run: |
           dvc remote modify origin --local auth basic
-          dvc remote modify origin --local user "${{ secrets.DAGSHUB_USERNAME }}"
-          dvc remote modify origin --local password "${{ secrets.DAGSHUB_TOKEN }}"
+          dvc remote modify origin --local user "${{ env.MLFLOW_TRACKING_USERNAME }}"
+          dvc remote modify origin --local password "${{ env.MLFLOW_TRACKING_PASSWORD }}"
           dvc remote default origin
 
       - name: data ingestion
