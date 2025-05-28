@@ -81,9 +81,6 @@ def main():
     try:
         set_experiment("model_evaluation_experiment")
         with start_run():
-            mlflow.set_tag("label", "baseline-experiment")
-            mlflow.set_tag("team", "research")
-            
             params = load_params(params_path='./params.yaml')['model_building']
             clf = load_model('./models/model.pkl')
             test_data = load_data('./data/processed/test_tfidf.csv')

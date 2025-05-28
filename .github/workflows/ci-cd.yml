@@ -97,3 +97,12 @@ jobs:
               git push
               dvc push
           fi
+
+      - name: Fetch model from DagsHub
+        run: |
+          python src/utils/fetch_model.py
+
+      - name: app build
+        run: |
+          echo "docker build" << model pull from somewhere
+          echo "image push"
