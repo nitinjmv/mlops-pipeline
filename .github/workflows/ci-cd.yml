@@ -41,7 +41,7 @@ jobs:
 
       - name: Configure DagsHub remote with authentication
         env:
-          GH_TOKEN: ${{ secrets.GH_PAT }}
+          GH_TOKEN: ${{secrets.GH_PAT }}
         run: |
           git remote set-url origin https://x-access-token:${{GH_TOKEN}}@github.com/nitinjmv/mlops-pipeline
           dvc remote add -d myremote https://github.com/nitinjmv/mlops-pipeline.git
