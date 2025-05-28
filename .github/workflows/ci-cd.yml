@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 jobs:
-  build-pipeline:
+  ci-pipeline:
     runs-on: ubuntu-latest
     env:
       MLFLOW_TRACKING_URI: https://dagshub.com/nitinjmv/mlops-pipeline.mlflow
@@ -95,20 +95,3 @@ jobs:
               git commit -m "Auto DVC update"
               git push
           fi
-
-      - name: Read MLflow run_id
-        id: get_run_id
-        run: |
-          RUN_ID=$(cat mlflow_run_id.txt)
-          echo "MLFLOW_RUN_ID=$RUN_ID" >> $GITHUB_ENV
-          echo "run_id is $RUN_ID"
-
-      - name: Push model to DagsHub Model Registry
-        run: |
-          mlflow models register \
-            --model-uri "runs:/$MLFLOW_RUN_ID/models" \
-            --name "model_test"
-
-      - name: Start Flask App
-        run: |
-          nohup python src/app/app.py &
