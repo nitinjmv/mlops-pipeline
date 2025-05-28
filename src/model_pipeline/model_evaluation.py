@@ -57,6 +57,7 @@ def evaluate_model(clf, X_test: np.ndarray, y_test: np.ndarray) -> dict:
             'auc': auc
         }
         logger.debug('Model evaluation metrics calculated')
+        
         return metrics_dict
     except Exception as e:
         logger.error('Error during model evaluation: %s', e)
@@ -90,6 +91,11 @@ def main():
 
             metrics = evaluate_model(clf, X_test, y_test)
 
+            mlflow.sklearn.log_model(sk_model=clf, artifact_path="random_forest_classifier")
+            mlflow.log_param("n_estimators", params['n_estimators'])
+            mlflow.log_param("random_state", params['random_state'])
+            mlflow.log_metric("accuracy", clf.score(X_test, y_test))
+
             # Log metrics to MLflow
             for key, value in metrics.items():
                 log_metric(key, value)
@@ -98,7 +104,7 @@ def main():
             metrics_path = 'reports/metrics.json'
             save_metrics(metrics, metrics_path)
             log_artifact(metrics_path)
-            mlflow.log_model()
+            
 
     except Exception as e:
         logger.error('Failed to complete the model evaluation process: %s', e)
