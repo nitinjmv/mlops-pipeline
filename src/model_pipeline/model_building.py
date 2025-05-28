@@ -88,6 +88,12 @@ def main():
             log_artifact(model_save_path)
             if os.path.exists("reports/metrics.json"):
                 log_artifact("reports/metrics.json")
+            
+            mlflow.sklearn.log_model(
+                sk_model=clf,
+                artifact_path="model",
+                registered_model_name="esdfsdafasd"
+            )
     except Exception as e:
         logger.error('Failed to complete the model building process: %s', e)
         print(f"Error: {e}")
