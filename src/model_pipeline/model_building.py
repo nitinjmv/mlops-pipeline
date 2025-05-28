@@ -114,12 +114,6 @@ def main():
             log_artifact(model_save_path)
             if os.path.exists("reports/metrics.json"):
                 log_artifact("reports/metrics.json")
-            
-            run_id = run.info.run_id
-            mlflow.register_model(
-                model_uri = f"runs:/{run_id}/model",
-                name="test-reg"
-            )
 
     except Exception as e:
         logger.error('Failed to complete the model building process: %s', e)

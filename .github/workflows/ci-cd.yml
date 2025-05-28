@@ -81,8 +81,6 @@ jobs:
 
       - name: model building
         run: PYTHONPATH=. python src/model_pipeline/model_building.py
-      - name: model evaluation
-        run: PYTHONPATH=. python src/model_pipeline/model_evaluation.py
 
       - name: Push model and metrics to DagsHub via DVC
         run: |
@@ -94,4 +92,21 @@ jobs:
           else
               git commit -m "Auto DVC update"
               git push
+              dvc push
+          fi
+
+      - name: model evaluation
+        run: PYTHONPATH=. python src/model_pipeline/model_evaluation.py
+
+      - name: Push evaluauted model and metrics to DagsHub via DVC
+        run: |
+          dvc add models/*.pkl reports/metrics.json
+          git add models/*.pkl.dvc reports/metrics.json.dvc
+
+          if git diff --cached --quiet; then
+              echo "WARNING: No changes were detected."
+          else
+              git commit -m "Auto DVC update"
+              git push
+              dvc push
           fi
