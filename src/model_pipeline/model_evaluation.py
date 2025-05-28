@@ -79,10 +79,9 @@ def save_metrics(metrics: dict, file_path: str) -> None:
 
 def main():
     try:
-
         with start_run():
             set_experiment("model-evaluation")
-            params = load_params(params_path='./params.yaml')
+            params = load_params(params_path='./params.yaml')['model_building']
             clf = load_model('./models/model.pkl')
             test_data = load_data('./data/processed/test_tfidf.csv')
 
@@ -107,22 +106,6 @@ def main():
         logger.error('Failed to complete the model evaluation process: %s', e)
         print(f"Error: {e}")
 
-
-# def main():
-#     try:
-#         params = load_params(params_path='./params.yaml')
-#         clf = load_model('./models/model.pkl')
-#         test_data = load_data('./data/processed/test_tfidf.csv')
-        
-#         X_test = test_data.iloc[:, :-1].values
-#         y_test = test_data.iloc[:, -1].values
-
-#         metrics = evaluate_model(clf, X_test, y_test)
-
-#         save_metrics(metrics, 'reports/metrics.json')
-#     except Exception as e:
-#         logger.error('Failed to complete the model evaluation process: %s', e)
-#         print(f"Error: {e}")
 
 if __name__ == '__main__':
     main()
