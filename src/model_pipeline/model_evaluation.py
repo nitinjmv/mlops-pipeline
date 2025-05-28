@@ -90,7 +90,9 @@ def main():
             y_test = test_data.iloc[:, -1].values
 
             metrics = evaluate_model(clf, X_test, y_test)
-
+            mlflow.log_param("n_estimators", params['n_estimators'])
+            mlflow.log_param("random_state", params['random_state'])
+            mlflow.log_metric("accuracy", clf.score(X_test, y_test))
             # Log metrics to MLflow
             for key, value in metrics.items():
                 log_metric(key, value)

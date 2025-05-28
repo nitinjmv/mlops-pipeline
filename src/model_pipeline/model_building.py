@@ -42,7 +42,6 @@ def train_model(X_train: np.ndarray, y_train: np.ndarray, params: dict) -> Rando
         logger.debug('Model training started with %d samples', X_train.shape[0])
         clf.fit(X_train, y_train)
         logger.debug('Model training completed')
-        mlflow.sklearn.log_model(sk_model=clf, artifact_path="random_forest_classifier", input_example=params["experiment_name"])
         mlflow.log_param("n_estimators", params['n_estimators'])
         mlflow.log_param("random_state", params['random_state'])
         mlflow.log_metric("accuracy", clf.score(X_train, y_train))
