@@ -1,16 +1,42 @@
-# serve_model.py
-import joblib
+from flask import Flask, request, render_template
+import pickle
 import os
-from flask import Flask, request, jsonify
+import pandas as pd
+from nltk.stem.porter import PorterStemmer
+from nltk.corpus import stopwords
+import nltk
+import string
 
-model = joblib.load("path/to/model.pkl")
+nltk.download('stopwords')
+nltk.download('punkt')
+
+# Load model
+model_path = os.path.join("models", "model.pkl")
+with open(model_path, "rb") as f:
+    model = pickle.load(f)
+
+# Flask app
 app = Flask(__name__)
 
-@app.route("/predict", methods=["POST"])
-def predict():
-    data = request.json["input"]
-    prediction = model.predict([data])
-    return jsonify(prediction=prediction.tolist())
+ps = PorterStemmer()
+
+def transform_text(text):
+    text = text.lower()
+    text = nltk.word_tokenize(text)
+    text = [word for word in text if word.isalnum()]
+    text = [word for word in text if word not in stopwords.words('english') and word not in string.punctuation]
+    text = [ps.stem(word) for word in text]
+    return " ".join(text)
+
+@app.route("/", methods=["GET", "POST"])
+def index():
+    prediction = None
+    if request.method == "POST":
+        message = request.form["message"]
+        transformed = transform_text(message)
+        pred = model.predict([transformed])[0]
+        prediction = "Spam" if pred else "Ham"
+    return render_template("index.html", prediction=prediction)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(debug=True)

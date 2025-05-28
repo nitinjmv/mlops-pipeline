@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Spam Classifier</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Spam Classifier</h2>
+        <form method="post">
+            <textarea name="message" placeholder="Enter your message..." required></textarea>
+            <button type="submit">Check</button>
+        </form>
+        {% if prediction %}
+            <div class="result"><strong>Prediction:</strong> {{ prediction }}</div>
+        {% endif %}
+    </div>
+</body>
+</html>
