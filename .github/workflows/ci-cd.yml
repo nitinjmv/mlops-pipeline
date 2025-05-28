@@ -90,10 +90,10 @@ jobs:
 
           if git diff --cached --quiet; then
               echo "WARNING: No changes were detected."
-            else
+          else
               git commit -m "Auto DVC update"
               git push
-           fi
+              dvc push
           fi
 
       - name: Read MLflow run_id
