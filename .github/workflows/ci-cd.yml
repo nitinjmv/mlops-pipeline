@@ -70,7 +70,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "WARNING: No changes were detected."
           else
-            git commit -m "Auto DVC update"
+            git commit -m "Auto DVC updsdsate"
             git push
             dvc push
           fi
