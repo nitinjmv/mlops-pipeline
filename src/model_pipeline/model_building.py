@@ -88,7 +88,15 @@ def main():
 
         with mlflow.start_run() as run:
             run_id = run.info.run_id
-            logger.debug(f'run_id {run_id}')
+            print(f"MLflow run_id: {run_id}")
+
+            # Optionally log something
+            mlflow.log_param("test_param", 123)
+
+            # Save run_id to file
+            with open("mlflow_run_id.txt", "w") as f:
+                f.write(run_id)
+
             params = load_params('./params.yaml')['model_building']
             log_param("n_estimators", params["n_estimators"])
             log_param("random_state", params["random_state"])

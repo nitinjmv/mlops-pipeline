@@ -42,6 +42,7 @@ jobs:
       - name: Configure DagsHub remote with authentication
         run: |
           git remote set-url origin https://${{ secrets.DAGSHUB_USERNAME }}:${{ secrets.DAGSHUB_TOKEN }}@dagshub.com/nitinjmv/mlops-pipeline.git
+          dvc remote add -d myremote https://github.com/nitinjmv/mlops-pipeline.git
 
       - name: Authenticate DVC remote (DagsHub)
         run: |
@@ -94,11 +95,18 @@ jobs:
             echo "WARNING: No changes were detected."
           fi
 
+      - name: Read MLflow run_id
+        id: get_run_id
+        run: |
+          RUN_ID=$(cat mlflow_run_id.txt)
+          echo "MLFLOW_RUN_ID=$RUN_ID" >> $GITHUB_ENV
+          echo "run_id is $RUN_ID"
+
       - name: Push model to DagsHub Model Registry
         run: |
           mlflow models register \
-            --model-uri "runs:/<run_id>/models" \
-            --name "<model_registry_name>"
+            --model-uri "runs:/$MLFLOW_RUN_ID/models" \
+            --name "model_test"
 
       - name: Start Flask App
         run: |
