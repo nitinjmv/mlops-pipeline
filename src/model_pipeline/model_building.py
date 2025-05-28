@@ -92,7 +92,7 @@ def main():
             mlflow.sklearn.log_model(
                 sk_model=clf,
                 artifact_path="model",
-                registered_model_name="esdfsdafasd"
+                registered_model_name="SpamModel"
             )
     except Exception as e:
         logger.error('Failed to complete the model building process: %s', e)
