@@ -3,6 +3,7 @@ import os
 from sklearn.feature_extraction.text import TfidfVectorizer
 import logging
 import yaml
+import mlflow
 
 # Ensure the "logs" directory exists
 log_dir = 'logs'
@@ -81,21 +82,44 @@ def save_data(df: pd.DataFrame, file_path: str) -> None:
         raise
 
 def main():
-    try:
-        params = load_params(params_path='./params.yaml')
-        max_features = params['feature_engineering']['max_features']
-        # max_features = 50
+    mlflow.set_experiment("feature_engineering_experiment")
+    
+    with mlflow.start_run():
+        try:
+            params = load_params(params_path='./params.yaml')
+            max_features = params['feature_engineering']['max_features']
+            mlflow.log_param("max_features", max_features)
 
-        train_data = load_data('./data/interim/train_processed.csv')
-        test_data = load_data('./data/interim/test_processed.csv')
+            # Load data
+            train_data = load_data('./data/interim/train_processed.csv')
+            test_data = load_data('./data/interim/test_processed.csv')
 
-        train_df, test_df = apply_tfidf(train_data, test_data, max_features)
+            # Log raw data metrics
+            mlflow.log_metric("train_samples", train_data.shape[0])
+            mlflow.log_metric("test_samples", test_data.shape[0])
 
-        save_data(train_df, os.path.join("./data", "processed", "train_tfidf.csv"))
-        save_data(test_df, os.path.join("./data", "processed", "test_tfidf.csv"))
-    except Exception as e:
-        logger.error('Failed to complete the feature engineering process: %s', e)
-        print(f"Error: {e}")
+            # Apply TF-IDF
+            train_df, test_df = apply_tfidf(train_data, test_data, max_features)
+
+            mlflow.log_metric("num_features_extracted", train_df.shape[1] - 1)
+
+            # Save processed data
+            processed_dir = os.path.join("./data", "processed")
+            train_path = os.path.join(processed_dir, "train_tfidf.csv")
+            test_path = os.path.join(processed_dir, "test_tfidf.csv")
+
+            save_data(train_df, train_path)
+            save_data(test_df, test_path)
+
+            # Log artifacts
+            mlflow.log_artifact(train_path)
+            mlflow.log_artifact(test_path)
+
+            logger.debug('Feature engineering completed and tracked with MLflow')
+
+        except Exception as e:
+            logger.error('Failed to complete the feature engineering process: %s', e)
+            print(f"Error: {e}")
 
 if __name__ == '__main__':
     main()

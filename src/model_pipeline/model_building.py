@@ -72,7 +72,7 @@ def save_model(model, file_path: str) -> None:
 
 def main():
     try:
-
+        mlflow.set_experiment("model_building_experiment")
         with mlflow.start_run() as run:
             # Optionally log something
             mlflow.log_param("test_param", 123)

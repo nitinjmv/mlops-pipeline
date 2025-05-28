@@ -5,6 +5,8 @@ from nltk.stem.porter import PorterStemmer
 from nltk.corpus import stopwords
 import string
 import nltk
+import mlflow
+
 nltk.download('stopwords')
 nltk.download('punkt_tab')
 
@@ -58,34 +60,53 @@ def preprocess_df(df, text_column='text', target_column='target'):
         raise
 
 def main(text_column='text', target_column='target'):
-    """
-    Main function to load raw data, preprocess it, and save the processed data.
-    """
-    try:
-        # Fetch the data from data/raw
-        train_data = pd.read_csv('./data/raw/train.csv')
-        test_data = pd.read_csv('./data/raw/test.csv')
-        logger.debug('Data loaded properly')
+    mlflow.set_experiment("data_preprocessing_experiment")
 
-        # Transform the data
-        train_processed_data = preprocess_df(train_data, text_column, target_column)
-        test_processed_data = preprocess_df(test_data, text_column, target_column)
+    with mlflow.start_run():
+        try:
+            # Log parameters
+            mlflow.log_param("text_column", text_column)
+            mlflow.log_param("target_column", target_column)
 
-        # Store the data inside data/processed
-        data_path = os.path.join("./data", "interim")
-        os.makedirs(data_path, exist_ok=True)
-        
-        train_processed_data.to_csv(os.path.join(data_path, "train_processed.csv"), index=False)
-        test_processed_data.to_csv(os.path.join(data_path, "test_processed.csv"), index=False)
-        
-        logger.debug('Processed data saved to %s', data_path)
-    except FileNotFoundError as e:
-        logger.error('File not found: %s', e)
-    except pd.errors.EmptyDataError as e:
-        logger.error('No data: %s', e)
-    except Exception as e:
-        logger.error('Failed to complete the data transformation process: %s', e)
-        print(f"Error: {e}")
+            # Load data
+            train_data = pd.read_csv('./data/raw/train.csv')
+            test_data = pd.read_csv('./data/raw/test.csv')
+            logger.debug('Data loaded properly')
+
+            # Log input data size
+            mlflow.log_metric("train_rows_raw", train_data.shape[0])
+            mlflow.log_metric("test_rows_raw", test_data.shape[0])
+
+            # Transform the data
+            train_processed_data = preprocess_df(train_data, text_column, target_column)
+            test_processed_data = preprocess_df(test_data, text_column, target_column)
+
+            # Log output data size
+            mlflow.log_metric("train_rows_processed", train_processed_data.shape[0])
+            mlflow.log_metric("test_rows_processed", test_processed_data.shape[0])
+
+            # Save processed data
+            data_path = os.path.join("./data", "interim")
+            os.makedirs(data_path, exist_ok=True)
+            train_path = os.path.join(data_path, "train_processed.csv")
+            test_path = os.path.join(data_path, "test_processed.csv")
+
+            train_processed_data.to_csv(train_path, index=False)
+            test_processed_data.to_csv(test_path, index=False)
+            
+            # Log artifacts
+            mlflow.log_artifact(train_path)
+            mlflow.log_artifact(test_path)
+
+            logger.debug('Processed data saved and logged with MLflow')
+
+        except FileNotFoundError as e:
+            logger.error('File not found: %s', e)
+        except pd.errors.EmptyDataError as e:
+            logger.error('No data: %s', e)
+        except Exception as e:
+            logger.error('Failed to complete the data transformation process: %s', e)
+            print(f"Error: {e}")
 
 if __name__ == '__main__':
     main()

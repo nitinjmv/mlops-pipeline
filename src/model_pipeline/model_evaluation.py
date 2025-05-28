@@ -79,8 +79,8 @@ def save_metrics(metrics: dict, file_path: str) -> None:
 
 def main():
     try:
+        set_experiment("model_evaluation_experiment")
         with start_run():
-            set_experiment("model-evaluation")
             params = load_params(params_path='./params.yaml')['model_building']
             clf = load_model('./models/model.pkl')
             test_data = load_data('./data/processed/test_tfidf.csv')
