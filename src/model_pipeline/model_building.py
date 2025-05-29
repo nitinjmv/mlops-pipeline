@@ -76,7 +76,7 @@ def main():
             log_param("random_state", params["random_state"])
 
             # ✅ Load cleaned raw text data (not TF-IDF)
-            train_data = load_data('./data/processed/train_processed.csv')
+            train_data = load_data('./data/interim/train_processed.csv')
             X_train = train_data['text'].values
             y_train = train_data['target'].values
 
