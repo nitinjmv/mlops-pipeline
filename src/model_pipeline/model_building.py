@@ -49,11 +49,9 @@ def train_model(X_train: np.ndarray, y_train: np.ndarray, params: dict) -> Rando
         logger.error('Error during model training: %s', e)
         raise
 
-
 def save_model(model, file_path: str) -> None:
     try:
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
-        
         with open(file_path, 'wb') as file:
             pickle.dump(model, file)
         logger.debug('Model saved to %s', file_path)
@@ -64,23 +62,21 @@ def save_model(model, file_path: str) -> None:
         logger.error('Error occurred while saving the model: %s', e)
         raise
 
-
-
 def main():
     try:
-        mlflow.set_experiment("model_building_experiment")
+        params = load_params('./params.yaml')['model_building']
+        grouped_experiment_name = f"spam-classifier/model-building"
+        mlflow.set_experiment(grouped_experiment_name)
+
         with mlflow.start_run() as run:
-            params = load_params('./params.yaml')['model_building']
-            set_experiment(f'model-building: {params["experiment_name"]}')
             log_param("n_estimators", params["n_estimators"])
             log_param("random_state", params["random_state"])
 
-            # ✅ Load cleaned raw text data (not TF-IDF)
             train_data = load_data('./data/interim/train_processed.csv')
-            X_train = train_data['text'].values
+            train_data = train_data.dropna(subset=['text'])
+            X_train = train_data['text'].astype(str).values
             y_train = train_data['target'].values
 
-            # ✅ Build full pipeline
             pipeline = Pipeline([
                 ('tfidf', TfidfVectorizer(max_features=5000)),
                 ('clf', RandomForestClassifier(
@@ -88,10 +84,6 @@ def main():
                     random_state=params["random_state"]
                 ))
             ])
-                       
-            train_data = train_data.dropna(subset=['text'])
-            X_train = train_data['text'].astype(str).values
-            y_train = train_data['target'].values
 
             logger.debug('Fitting pipeline...')
             pipeline.fit(X_train, y_train)
@@ -114,7 +106,6 @@ def main():
     except Exception as e:
         logger.error('Failed to complete the model building process: %s', e)
         print(f"Error: {e}")
-
 
 if __name__ == '__main__':
     main()

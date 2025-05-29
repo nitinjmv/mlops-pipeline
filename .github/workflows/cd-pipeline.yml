@@ -44,5 +44,8 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Push Docker image
-        run: docker tag spam-api ${{ secrets.DOCKER_USERNAME }}/spam-api:latest && docker push ${{ secrets.DOCKER_USERNAME }}/spam-api:latest
+      - name: Push to DockerHub
+        run: |
+          echo "${{ env.DOCKER_PASSWORD }}" | docker login -u "${{ env.DOCKER_USERNAME }}" --password-stdin
+          docker tag spam-claasifier-app nitinjmv/spam-claasifier-app:latest
+          docker push nitinjmv/spam-claasifier-app:latest
