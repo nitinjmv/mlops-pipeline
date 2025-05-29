@@ -106,7 +106,7 @@ def main():
             mlflow.sklearn.log_model(
                 sk_model=pipeline,
                 artifact_path="model",
-                registered_model_name="SpamModel"
+                registered_model_name="SpamClassifierModel"
             )
 
             if os.path.exists("reports/metrics.json"):
