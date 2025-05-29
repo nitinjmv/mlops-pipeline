@@ -65,9 +65,9 @@ jobs:
 
       - name: Track and commit processed data
         run: |
-          dvc add data/processed/test_processed.csv data/processed/train_processed.csv
+          dvc add data/interim/test_processed.csv data/interim/train_processed.csv
           dvc add data/processed/test_tfidf.csv data/processed/train_tfidf.csv
-          git add data/processed/test_processed.csv.dvc data/processed/train_processed.csv.dvc
+          git add data/interim/test_processed.csv.dvc data/interim/train_processed.csv.dvc
           git add data/processed/test_tfidf.csv.dvc data/processed/train_tfidf.csv.dvc
           git add data/processed/.gitignore
 
