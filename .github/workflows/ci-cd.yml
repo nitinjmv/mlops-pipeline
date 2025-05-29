@@ -109,5 +109,4 @@ jobs:
               git push
               dvc push
           fi
-      - name: Register & Promote best model to MLflow
-        run: PYTHONPATH=. python src/utils/register_best_model.py
+      
