@@ -2,7 +2,12 @@ name: Preprocess, Train, Test, Validate
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - "feature/**"
+  pull_request:
+    branches:
+      - main
 
 jobs:
   ci-pipeline:
