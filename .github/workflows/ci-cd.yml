@@ -65,7 +65,9 @@ jobs:
 
       - name: Track and commit processed data
         run: |
+          dvc add data/processed/test_processed.csv data/processed/train_processed.csv
           dvc add data/processed/test_tfidf.csv data/processed/train_tfidf.csv
+          git add data/processed/test_processed.csv.dvc data/processed/train_processed.csv.dvc
           git add data/processed/test_tfidf.csv.dvc data/processed/train_tfidf.csv.dvc
           git add data/processed/.gitignore
 
@@ -109,8 +111,8 @@ jobs:
       - name: Push to DockerHub
         run: |
           echo "${{ env.DOCKER_PASSWORD }}" | docker login -u "${{ env.DOCKER_USERNAME }}" --password-stdin
-          docker tag tag1 nitinjmv/some_name:latest
-          docker push nitinjmv/some_name:latest
+          docker tag tag1 nitinjmv/spam-classifier:latest
+          docker push nitinjmv/spam-classifier:latest
 
       - name: app build
         run: |
