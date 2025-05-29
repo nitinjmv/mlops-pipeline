@@ -6,6 +6,8 @@ import logging
 from sklearn.ensemble import RandomForestClassifier
 from mlflow import log_metric, log_param, log_artifact, set_experiment, start_run, mlflow
 from src.utils.commons import load_params, logging_setup
+from sklearn.pipeline import Pipeline
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 logger = logging_setup('model_building')
 mlflow.autolog()
@@ -63,6 +65,7 @@ def save_model(model, file_path: str) -> None:
         raise
 
 
+
 def main():
     try:
         mlflow.set_experiment("model_building_experiment")
@@ -72,28 +75,38 @@ def main():
             log_param("n_estimators", params["n_estimators"])
             log_param("random_state", params["random_state"])
 
-            train_data = load_data('./data/processed/train_tfidf.csv')
-            X_train = train_data.iloc[:, :-1].values
-            y_train = train_data.iloc[:, -1].values
+            # ✅ Load cleaned raw text data (not TF-IDF)
+            train_data = load_data('./data/processed/train_clean.csv')
+            X_train = train_data['text'].values
+            y_train = train_data['target'].values
 
-            clf = train_model(X_train, y_train, params)
+            # ✅ Build full pipeline
+            pipeline = Pipeline([
+                ('tfidf', TfidfVectorizer(max_features=5000)),
+                ('clf', RandomForestClassifier(
+                    n_estimators=params["n_estimators"],
+                    random_state=params["random_state"]
+                ))
+            ])
 
-            # You can log training metrics here if applicable
+            logger.debug('Fitting pipeline...')
+            pipeline.fit(X_train, y_train)
+
             log_metric("num_training_samples", len(X_train))
+            log_metric("train_accuracy", pipeline.score(X_train, y_train))
 
             model_save_path = 'models/model.pkl'
-            save_model(clf, model_save_path)
-
-            # Log the model file and any other outputs
+            save_model(pipeline, model_save_path)
             log_artifact(model_save_path)
-            if os.path.exists("reports/metrics.json"):
-                log_artifact("reports/metrics.json")
-            
+
             mlflow.sklearn.log_model(
-                sk_model=clf,
+                sk_model=pipeline,
                 artifact_path="model",
                 registered_model_name="SpamModel"
             )
+
+            if os.path.exists("reports/metrics.json"):
+                log_artifact("reports/metrics.json")
     except Exception as e:
         logger.error('Failed to complete the model building process: %s', e)
         print(f"Error: {e}")

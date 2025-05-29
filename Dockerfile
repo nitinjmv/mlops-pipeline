@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y git
 
 RUN pip install pandas scikit-learn dvc mlflow nltk joblib flask
 
-RUN python -m nltk.downloader punkt stopwords
+RUN python -m nltk.downloader punkt punkt_tab sklearn stopwords
 
 RUN git clone https://dagshub.com/nitinjmv/mlops-pipeline.git . \
     && dvc pull models/model.pkl.dvc \

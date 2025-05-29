@@ -8,7 +8,7 @@ import nltk
 import string
 
 nltk.download('stopwords')
-nltk.download('punkt')
+nltk.download('punkt_tab')
 
 # Load model
 model_path = os.path.join("models", "model.pkl")
@@ -34,9 +34,10 @@ def index():
     if request.method == "POST":
         message = request.form["message"]
         transformed = transform_text(message)
-        pred = model.predict([transformed])[0]
+        pred = model.predict([transformed])
         prediction = "Spam" if pred else "Ham"
     return render_template("index.html", prediction=prediction)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
+
