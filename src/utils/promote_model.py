@@ -62,5 +62,5 @@ client.transition_model_version_stage(
 print(f"Promoted model version {registered_model.version} to 'Production' stage.")
 
 # --- Download the model artifacts to local directory ---
-downloaded_path = mlflow.artifacts.download_artifacts(artifact_uri=model_uri)
+downloaded_path = mlflow.artifacts.download_artifacts(artifact_uri=model_uri, des_path = "models")
 print(f"Model artifacts downloaded to: {downloaded_path}")
