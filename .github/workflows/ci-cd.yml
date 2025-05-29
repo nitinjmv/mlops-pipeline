@@ -105,19 +105,9 @@ jobs:
               dvc push
           fi
 
-      - name: Pull model from DagsHub
-        run: dvc pull models/model.pkl.dvc
-
-      - name: Build Docker Image
-        run: docker build -t tag1 .
-
-      - name: Push to DockerHub
-        run: |
-          echo "${{ env.DOCKER_PASSWORD }}" | docker login -u "${{ env.DOCKER_USERNAME }}" --password-stdin
-          docker tag tag1 nitinjmv/spam-classifier:latest
-          docker push nitinjmv/spam-classifier:latest
-
-      - name: app build
-        run: |
-          echo "docker build" << model pull from somewhere
-          echo "image push"
+      # Manual intervention to choose the right model to bundle in docker image of app
+      - name: Trigger Docker Build Workflow
+        uses: ./.github/workflows/pull-and-dockerize.yml
+        with:
+          model_name: SpamModel
+          model_stage: Production
