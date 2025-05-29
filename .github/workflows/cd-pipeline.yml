@@ -1,4 +1,4 @@
-name: Pull Model and Dockerize
+name: Deployment application
 
 on:
   workflow_dispatch:
