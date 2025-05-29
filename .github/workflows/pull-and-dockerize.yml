@@ -37,9 +37,9 @@ jobs:
       - name: Pull model from DagsHub MLflow
         run: |
           python -c "
-              import mlflow.pyfunc
-              model = mlflow.pyfunc.load_model('models:/${{ github.event.inputs.model_name }}/${{ github.event.inputs.model_stage }}')
-              model.save_model('models')
+          import mlflow.pyfunc
+          model = mlflow.pyfunc.load_model('models:/${{ github.event.inputs.model_name }}/${{ github.event.inputs.model_stage }}')
+          model.save_model('models')
           "
 
       - name: Build Docker image
