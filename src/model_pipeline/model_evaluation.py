@@ -83,7 +83,7 @@ def main():
         with start_run():
             params = load_params(params_path='./params.yaml')['model_building']
             clf = load_model('./models/model.pkl')
-            test_data = load_data('./data/processed/test_tfidf.csv')
+            test_data = load_data('./data/interim/test_tfidf.csv')
 
             X_test = test_data['text'].astype(str).values
             y_test = test_data['target'].values
