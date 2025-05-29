@@ -74,9 +74,6 @@ jobs:
           dvc add data/processed/test_tfidf.csv data/processed/train_tfidf.csv          
           git add data/processed/test_tfidf.csv.dvc data/processed/train_tfidf.csv.dvc
 
-          git add data/processed/.gitignore
-          git add data/interim/.gitignore
-
           if git diff --cached --quiet; then
             echo "WARNING: No changes were detected."
           else

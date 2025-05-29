@@ -36,7 +36,6 @@ def preprocess_data(df: pd.DataFrame) -> pd.DataFrame:
         raise
 
 def save_data(train_data: pd.DataFrame, test_data: pd.DataFrame, data_path: str) -> None:
-    """Save the train and test datasets."""
     try:
         raw_data_path = os.path.join(data_path, 'raw')
         os.makedirs(raw_data_path, exist_ok=True)
