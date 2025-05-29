@@ -85,8 +85,9 @@ def main():
             clf = load_model('./models/model.pkl')
             test_data = load_data('./data/processed/test_tfidf.csv')
 
-            X_test = test_data.iloc[:, :-1].values
-            y_test = test_data.iloc[:, -1].values
+            X_test = test_data['text'].astype(str).values
+            y_test = test_data['target'].values
+
 
             metrics = evaluate_model(clf, X_test, y_test)
             mlflow.log_param("n_estimators", params['n_estimators'])
