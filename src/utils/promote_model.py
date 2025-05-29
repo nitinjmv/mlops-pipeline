@@ -1,5 +1,6 @@
 import sys
 import mlflow
+import shutil
 from mlflow.tracking import MlflowClient
 from src.utils.commons import logging_setup
 import mlflow.pyfunc
@@ -62,4 +63,4 @@ client.transition_model_version_stage(
 print(f"Promoted model version {registered_model.version} to 'Production' stage.")
 
 model = mlflow.pyfunc.load_model(model_uri)
-model.save_model('models')
+shutil.copytree(model_uri, "models")
