@@ -1,7 +1,8 @@
+import sys
 import mlflow
 from mlflow.tracking import MlflowClient
 from src.utils.commons import logging_setup
-import sys
+import mlflow.pyfunc
 
 logger = logging_setup('model_promotion')
 
@@ -59,3 +60,6 @@ client.transition_model_version_stage(
     archive_existing_versions=True
 )
 print(f"Promoted model version {registered_model.version} to 'Production' stage.")
+
+model = mlflow.pyfunc.load_model(model_uri)
+model.save_model('models')
