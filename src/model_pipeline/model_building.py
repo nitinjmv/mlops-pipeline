@@ -88,6 +88,10 @@ def main():
                     random_state=params["random_state"]
                 ))
             ])
+                       
+            train_data = train_data.dropna(subset=['text'])
+            X_train = train_data['text'].astype(str).values
+            y_train = train_data['target'].values
 
             logger.debug('Fitting pipeline...')
             pipeline.fit(X_train, y_train)

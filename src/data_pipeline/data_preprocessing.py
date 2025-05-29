@@ -45,7 +45,7 @@ def preprocess_df(df, text_column='text', target_column='target'):
 
         # Remove duplicate rows
         df = df.drop_duplicates(keep='first')
-        logger.debug('Duplicates removed')
+        logger.debug('Duplicates removed')       
         
         # Apply text transformation to the specified text column
         df.loc[:, text_column] = df[text_column].apply(transform_text)
