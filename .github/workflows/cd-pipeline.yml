@@ -32,7 +32,7 @@ jobs:
         run: |
           pip install mlflow joblib scikit-learn pandas flask nltk
 
-      - name: Promote model to MLflow
+      - name: Promote model for deployment
         run: PYTHONPATH=. python src/utils/promote_model.py ${{github.event.inputs.run_id}}
 
       - name: Pull model from DagsHub MLflow

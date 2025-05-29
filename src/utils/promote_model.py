@@ -5,7 +5,7 @@ import sys
 
 logger = logging_setup('model_promotion')
 
-run_id = sys.argv[0]
+run_id = sys.argv[1]
 logger.debug(f'run_id found {run_id}')
 
 EXPERIMENT_NAME = "model_evaluation_experiment"
