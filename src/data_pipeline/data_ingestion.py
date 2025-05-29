@@ -1,14 +1,12 @@
 import pandas as pd
 import os
 from sklearn.model_selection import train_test_split
-from mlflow import start_run, set_experiment, log_param, log_metric, log_artifact, mlflow
 
 from src.utils.commons import load_params, logging_setup
 
 logger = logging_setup('data_ingestion')
 
 def load_data(data_url: str) -> pd.DataFrame:
-    """Load data from a CSV file."""
     try:
         df = pd.read_csv(data_url)
         logger.debug('Data loaded from %s', data_url)
@@ -45,32 +43,18 @@ def save_data(train_data: pd.DataFrame, test_data: pd.DataFrame, data_path: str)
         logger.error('Unexpected error occurred while saving the data: %s', e)
         raise
 
-
-
 def main():
     try:
-        set_experiment("data-ingestion")
-
         params = load_params(params_path='./params.yaml')
         test_size = params['data_ingestion']['test_size']
-        log_param("test_size", test_size)
 
         data_path = './Datasets/spam.csv'
         df = load_data(data_url=data_path)
 
-        log_metric("raw_rows", df.shape[0])
-        log_metric("raw_columns", df.shape[1])
-
         final_df = preprocess_data(df)
         train_data, test_data = train_test_split(final_df, test_size=test_size, random_state=2)
 
-        # Save CSVs
         save_data(train_data, test_data, data_path='./data')
-
-        # Log saved artifacts
-        log_artifact("data/raw/train.csv")
-        log_artifact("data/raw/test.csv")
-
     except Exception as e:
         logger.error('Failed to complete the data ingestion process: %s', e)
         print(f"Error: {e}")
