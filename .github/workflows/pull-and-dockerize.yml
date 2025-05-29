@@ -3,14 +3,9 @@ name: Pull Model and Dockerize
 on:
   workflow_dispatch:
     inputs:
-      model_name:
-        description: "Name of registered MLflow model"
-        required: true
-        default: "SpamModel"
-      model_stage:
-        description: "Model stage (e.g., Production or version number)"
-        required: true
-        default: "Production"
+      run_id:
+        description: "Run id of the model to promote and deploy"
+        required: false
 
 jobs:
   build-docker:
@@ -31,11 +26,14 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: "3.12"
 
       - name: Install Python dependencies
         run: |
           pip install mlflow joblib scikit-learn pandas flask nltk
+
+      - name: Promote model to MLflow
+        run: PYTHONPATH=. python src/utils/promote_model.py ${{github.event.inputs.run_id}}
 
       - name: Pull model from DagsHub MLflow
         run: |
