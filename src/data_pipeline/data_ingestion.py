@@ -6,7 +6,6 @@ from mlflow import start_run, set_experiment, log_param, log_metric, log_artifac
 from src.utils.commons import load_params, logging_setup
 
 logger = logging_setup('data_ingestion')
-mlflow.autolog()
 
 def load_data(data_url: str) -> pd.DataFrame:
     """Load data from a CSV file."""
@@ -52,26 +51,25 @@ def main():
     try:
         set_experiment("data-ingestion")
 
-        with start_run():
-            params = load_params(params_path='./params.yaml')
-            test_size = params['data_ingestion']['test_size']
-            log_param("test_size", test_size)
+        params = load_params(params_path='./params.yaml')
+        test_size = params['data_ingestion']['test_size']
+        log_param("test_size", test_size)
 
-            data_path = './Datasets/spam.csv'
-            df = load_data(data_url=data_path)
+        data_path = './Datasets/spam.csv'
+        df = load_data(data_url=data_path)
 
-            log_metric("raw_rows", df.shape[0])
-            log_metric("raw_columns", df.shape[1])
+        log_metric("raw_rows", df.shape[0])
+        log_metric("raw_columns", df.shape[1])
 
-            final_df = preprocess_data(df)
-            train_data, test_data = train_test_split(final_df, test_size=test_size, random_state=2)
+        final_df = preprocess_data(df)
+        train_data, test_data = train_test_split(final_df, test_size=test_size, random_state=2)
 
-            # Save CSVs
-            save_data(train_data, test_data, data_path='./data')
+        # Save CSVs
+        save_data(train_data, test_data, data_path='./data')
 
-            # Log saved artifacts
-            log_artifact("data/raw/train.csv")
-            log_artifact("data/raw/test.csv")
+        # Log saved artifacts
+        log_artifact("data/raw/train.csv")
+        log_artifact("data/raw/test.csv")
 
     except Exception as e:
         logger.error('Failed to complete the data ingestion process: %s', e)

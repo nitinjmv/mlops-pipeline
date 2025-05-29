@@ -104,10 +104,3 @@ jobs:
               git push
               dvc push
           fi
-
-      # Manual intervention to choose the right model to bundle in docker image of app
-      - name: Trigger Docker Build Workflow
-        uses: ./.github/workflows/pull-and-dockerize.yml
-        with:
-          model_name: SpamModel
-          model_stage: Production
