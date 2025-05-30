@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: spam-classifier
-        image: spam-classifier-app:latest
+        image: nitinjmv/spam-classifier-app:latest
         ports:
         - containerPort: 5000
