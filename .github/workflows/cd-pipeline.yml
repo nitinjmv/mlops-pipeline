@@ -8,7 +8,7 @@ on:
         required: false
 
 jobs:
-  build-docker:
+  docker-build:
     runs-on: ubuntu-latest
 
     env:
@@ -48,17 +48,18 @@ jobs:
           docker tag spam-classifier-app nitinjmv/spam-classifier-app:latest
           docker push nitinjmv/spam-classifier-app:latest
 
-      - name: Set up Google Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
-        with:
-          project_id: l00188370-project
-          service_account_key: ${{ secrets.GCP_CREDENTIALS }}
-          export_default_credentials: true
+  deploy-to-minikube:
+    name: Deploy to Minikube (Self-Hosted)
+    runs-on: [self-hosted, minikube-runner]
+    needs: docker-build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Deploy to Cloud Run
+      - name: Verify Minikube is running
         run: |
-          gcloud run deploy spam-classifier-app \
-            --image spam-classifier-app:latest \
-            --region europe-west2-c \
-            --platform managed \
-            --allow-unauthenticated
+          minikube status
+
+      - name: Set Kubernetes context (optional if already set)
+        run: |
+          kubectl config use-context minikube
