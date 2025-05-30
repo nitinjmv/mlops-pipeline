@@ -11,4 +11,4 @@ RUN python -m nltk.downloader punkt stopwords
 COPY src/app .
 COPY models/model/ models/model/
 
-CMD ["python", "apsadfsap.py"]
+CMD ["python", "app.py"]
