@@ -8,7 +8,6 @@ RUN pip install pandas scikit-learn dvc mlflow nltk joblib flask
 
 RUN python -m nltk.downloader punkt stopwords
 
-COPY src/app .
-COPY models/ models/
+COPY . .
 
 CMD ["python", "app.py"]
