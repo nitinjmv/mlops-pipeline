@@ -11,6 +11,12 @@ nltk.download('stopwords')
 nltk.download('punkt_tab')
 
 
+import time
+print("Checking contents of 'models' directory:")
+print(os.listdir("models"))
+input("Press Enter to load the model...")  # manual pause
+
+
 directory = "app" 
 
 if os.path.exists(directory):
