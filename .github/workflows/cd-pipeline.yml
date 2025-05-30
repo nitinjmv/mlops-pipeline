@@ -45,8 +45,8 @@ jobs:
       - name: Push to DockerHub
         run: |
           echo "${{ env.DOCKER_PASSWORD }}" | docker login -u "${{ env.DOCKER_USERNAME }}" --password-stdin
-          docker tag spam-claasifier-app nitinjmv/spam-claasifier-app:latest
-          docker push nitinjmv/spam-claasifier-app:latest
+          docker tag spam-classifier-app nitinjmv/spam-classifier-app:latest
+          docker push nitinjmv/spam-classifier-app:latest
 
       - name: Set up GCP credentials
         run: |

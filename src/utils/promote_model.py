@@ -48,6 +48,8 @@ if not run_id:
 
 model_uri = f"runs:/{run_id}/model"
 
+logger.debug(f'model_uri to retrieve the image {model_uri}')
+
 registered_model = mlflow.register_model(model_uri=model_uri, name=REGISTERED_MODEL_NAME)
 
 client.transition_model_version_stage(
