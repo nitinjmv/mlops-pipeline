@@ -11,4 +11,6 @@ RUN python -m nltk.downloader punkt stopwords
 COPY src/app .
 COPY models/model/ models/model/
 
+EXPOSE 5000
+
 CMD ["python", "app.py"]
