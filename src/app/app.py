@@ -10,8 +10,21 @@ import string
 nltk.download('stopwords')
 nltk.download('punkt_tab')
 
+
+directory = "app" 
+
+if os.path.exists(directory):
+    print(f"Contents of '{directory}':")
+    for item in os.listdir(directory):
+        print(item)
+else:
+    print(f"Directory '{directory}' does not exist.")
+
+
 # Load model
 model_path = os.path.join("models", "model.pkl")
+print(f'model_path {model_path}')
+
 with open(model_path, "rb") as f:
     model = pickle.load(f)
 
