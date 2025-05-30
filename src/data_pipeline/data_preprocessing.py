@@ -9,7 +9,7 @@ import nltk
 nltk.download('stopwords')
 nltk.download('punkt_tab')
 
-from src.utils.commons import load_params, logging_setup
+from src.utils.commons import logging_setup
 
 logger = logging_setup('data_preprocessing')
 

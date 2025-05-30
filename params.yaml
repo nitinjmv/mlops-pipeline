@@ -7,6 +7,5 @@ feature_engineering:
   max_features: 35
 
 model_building:
-  experiment_name: experiment-1
   n_estimators: 22
   random_state: 2
