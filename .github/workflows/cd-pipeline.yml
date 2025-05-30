@@ -34,7 +34,7 @@ jobs:
       - name: Promote model for deployment
         run: PYTHONPATH=. python src/utils/promote_model.py ${{github.event.inputs.run_id}}
       - name: Build Docker image
-        run: docker build -t spam-classifier-app .
+        run: docker build --no-cache -t spam-classifier-app:latest .
 
       - name: Login to DockerHub
         uses: docker/login-action@v2
