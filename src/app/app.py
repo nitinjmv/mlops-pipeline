@@ -28,7 +28,7 @@ else:
 
 
 # Load model
-model_path = os.path.join("models", "model.pkl")
+model_path = os.path.join("models", "model", "model.pkl")
 print(f'model_path {model_path}')
 
 with open(model_path, "rb") as f:
