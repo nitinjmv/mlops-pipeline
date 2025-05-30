@@ -1,21 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-app
-  labels:
-    app: my-app
+  name: spam-classifier
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: my-app
+      app: spam-classifier
   template:
     metadata:
       labels:
-        app: my-app
+        app: spam-classifier
     spec:
       containers:
-      - name: my-app
-        image: nitinjmv/spam-claasifier-app:latest
+      - name: spam-classifier
+        image: spam-classifier-app:latest
         ports:
         - containerPort: 5000

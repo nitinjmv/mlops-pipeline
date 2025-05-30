@@ -48,22 +48,17 @@ jobs:
           docker tag spam-classifier-app nitinjmv/spam-classifier-app:latest
           docker push nitinjmv/spam-classifier-app:latest
 
-      - name: Set up GCP credentials
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: L00188370-Project
+          service_account_key: ${{ secrets.GCP_CREDENTIALS }}
+          export_default_credentials: true
+
+      - name: Deploy to Cloud Run
         run: |
-          echo "${{ secrets.GCP_SERVICE_ACCOUNT_JSON }}" | base64 -d > /tmp/gcp-key.json
-          cat /tmp/gcp-key.json | jq .  # validate
-          gcloud auth activate-service-account --key-file=/tmp/gcp-key.json
-
-      - name: Deploy to Minikube
-        run: |
-          script:
-          - echo "Deploying to Minikube on GCP VM..."
-          - 'ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY user@<GCP_VM_IP> << ''EOF''
-
-            kubectl apply -f deployment/deployment.yaml
-            kubectl apply -f deployment/service.yaml
-            kubectl rollout status deployment/my-app
-
-            EOF'
-          only:
-          - main
+          gcloud run deploy spam-classifier-app \
+            --image spam-classifier-app:latest \
+            --region YOUR_REGION \
+            --platform managed \
+            --allow-unauthenticated
