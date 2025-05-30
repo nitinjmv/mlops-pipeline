@@ -31,13 +31,6 @@ jobs:
       - name: Install Python dependencies
         run: |
           pip install mlflow joblib scikit-learn pandas flask nltk
-
-      - name: Set up GCP credentials
-        run: |
-          echo "${{ secrets.GCP_SERVICE_ACCOUNT_JSON }}" | base64 -d > /tmp/gcp-key.json
-          cat /tmp/gcp-key.json | jq .  # validate
-          gcloud auth activate-service-account --key-file=/tmp/gcp-key.json
-
       - name: Promote model for deployment
         run: PYTHONPATH=. python src/utils/promote_model.py ${{github.event.inputs.run_id}}
       - name: Build Docker image
@@ -54,6 +47,12 @@ jobs:
           echo "${{ env.DOCKER_PASSWORD }}" | docker login -u "${{ env.DOCKER_USERNAME }}" --password-stdin
           docker tag spam-claasifier-app nitinjmv/spam-claasifier-app:latest
           docker push nitinjmv/spam-claasifier-app:latest
+
+      - name: Set up GCP credentials
+        run: |
+          echo "${{ secrets.GCP_SERVICE_ACCOUNT_JSON }}" | base64 -d > /tmp/gcp-key.json
+          cat /tmp/gcp-key.json | jq .  # validate
+          gcloud auth activate-service-account --key-file=/tmp/gcp-key.json
 
       - name: Deploy to Minikube
         run: |
