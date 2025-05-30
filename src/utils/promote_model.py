@@ -26,7 +26,7 @@ def promote_best_model():
     best_run = None
     best_metric_value = float('-inf')
 
-    print(f"Searching runs in experiment '{EXPERIMENT_NAME}' for highest {EVAL_METRIC} above threshold {METRIC_THRESHOLD}...")
+    logger.debug(f"Searching runs in experiment '{EXPERIMENT_NAME}' for highest {EVAL_METRIC} above threshold {METRIC_THRESHOLD}...")
 
     for run_info in client.search_runs(experiment_ids=[experiment_id], order_by=[f"metrics.{EVAL_METRIC} DESC"]):
         metrics = run_info.data.metrics
@@ -37,10 +37,10 @@ def promote_best_model():
             best_run = run_info
 
     if best_run is None:
-        print(f"No run found with {EVAL_METRIC} >= {METRIC_THRESHOLD}. Exiting.")
+        logger.debug(f"No run found with {EVAL_METRIC} >= {METRIC_THRESHOLD}. Exiting.")
         sys.exit(1)
 
-    print(f"Best run found: {best_run.info.run_id} with {EVAL_METRIC} = {best_metric_value}")
+    logger.debug(f"Best run found: {best_run.info.run_id} with {EVAL_METRIC} = {best_metric_value}")
     return best_run.info.run_id
 
 if not run_id:
@@ -57,8 +57,8 @@ client.transition_model_version_stage(
     archive_existing_versions=True
 )
 
-print(f"Promoted model version {registered_model.version} to 'Production' stage.")
+logger.debug(f"Promoted model version {registered_model.version} to 'Production' stage.")
 
 # --- Download the model artifacts to local directory ---
 downloaded_path = mlflow.artifacts.download_artifacts(artifact_uri=model_uri, dst_path = "models")
-print(f"Model artifacts downloaded to: {downloaded_path}")
+logger.info(f"Model artifacts downloaded to: {downloaded_path}")
