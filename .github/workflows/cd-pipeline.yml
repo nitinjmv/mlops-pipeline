@@ -56,10 +56,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Verify Minikube is running
+      - name: Apply Kubernetes manifests
         run: |
-          minikube status
-
-      - name: Set Kubernetes context (optional if already set)
-        run: |
-          kubectl config use-context minikube
+          kubectl apply -f https://raw.githubusercontent.com/nitinjmv/mlops-pipeline/refs/heads/main/k8s/service.yml
+          kubectl apply -f https://raw.githubusercontent.com/nitinjmv/mlops-pipeline/refs/heads/main/k8s/deployment.yml
