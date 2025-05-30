@@ -58,5 +58,4 @@ jobs:
 
       - name: Apply Kubernetes manifests
         run: |
-          kubectl apply -f https://raw.githubusercontent.com/nitinjmv/mlops-pipeline/refs/heads/main/k8s/service.yml
           kubectl apply -f https://raw.githubusercontent.com/nitinjmv/mlops-pipeline/refs/heads/main/k8s/deployment.yml
