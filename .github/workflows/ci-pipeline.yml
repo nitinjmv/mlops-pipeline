@@ -1,4 +1,4 @@
-name: Preprocess, Train, Test, Validate
+name: Continuous Integration Pipeline
 
 on:
   push:
@@ -109,4 +109,3 @@ jobs:
               git push
               dvc push
           fi
-      

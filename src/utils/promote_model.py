@@ -43,13 +43,11 @@ def promote_best_model():
     print(f"Best run found: {best_run.info.run_id} with {EVAL_METRIC} = {best_metric_value}")
     return best_run.info.run_id
 
-# --- Determine run_id and model_uri ---
 if not run_id:
     run_id = promote_best_model()
 
 model_uri = f"runs:/{run_id}/model"
 
-# --- Register and promote the model ---
 registered_model = mlflow.register_model(model_uri=model_uri, name=REGISTERED_MODEL_NAME)
 
 client.transition_model_version_stage(
@@ -62,5 +60,5 @@ client.transition_model_version_stage(
 print(f"Promoted model version {registered_model.version} to 'Production' stage.")
 
 # --- Download the model artifacts to local directory ---
-downloaded_path = mlflow.artifacts.download_artifacts(artifact_uri=model_uri, des_path = "models")
+downloaded_path = mlflow.artifacts.download_artifacts(artifact_uri=model_uri, dst_path = "models")
 print(f"Model artifacts downloaded to: {downloaded_path}")
