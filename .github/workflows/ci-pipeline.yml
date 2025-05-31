@@ -2,8 +2,6 @@ name: Continuous Integration Pipeline
 
 on:
   push:
-    paths:
-      - "data/**"
     branches:
       - main
       - "feature/**"
