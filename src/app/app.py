@@ -35,18 +35,10 @@ def transform_text(text):
 def index():
     prediction = None
     if request.method == "POST":
-        start = time()
         message = request.form["message"]
         transformed = transform_text(message)
         pred = model.predict([transformed])
         prediction = "Spam" if pred else "Ham"
-        latency = time() - start
-        print.info({
-            "timestamp": datetime.now().isoformat(),
-            "input": message,
-            "prediction": prediction.tolist(),
-            "latency": latency
-        })
     return render_template("index.html", prediction=prediction)
 
 
