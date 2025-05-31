@@ -10,16 +10,12 @@ from time import time
 from nltk.corpus import stopwords
 import nltk
 import string
-from src.utils.commons import load_params, logging_setup
-from prometheus_client import Counter, Histogram, generate_latest
 
 nltk.download('stopwords')
 nltk.download('punkt_tab')
 
-logger = logging_setup('app')
-
 model_path = os.path.join("models", "model", "model.pkl")
-logger.debug(f'model_path {model_path}')
+print(f'model_path {model_path}')
 with open(model_path, "rb") as f:
     model = pickle.load(f)
 
@@ -45,7 +41,7 @@ def index():
         pred = model.predict([transformed])
         prediction = "Spam" if pred else "Ham"
         latency = time() - start
-        logger.info({
+        print.info({
             "timestamp": datetime.now().isoformat(),
             "input": message,
             "prediction": prediction.tolist(),
@@ -53,10 +49,6 @@ def index():
         })
     return render_template("index.html", prediction=prediction)
 
-
-@app.route('/metrics')
-def metrics():
-    return Response(generate_latest(), mimetype='text/plain')
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
