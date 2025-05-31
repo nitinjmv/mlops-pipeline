@@ -10,3 +10,4 @@ nltk
 dagshub
 dvc
 seaborn
+prometheus_client
